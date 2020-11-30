@@ -12,9 +12,9 @@ public class HeroController {
     public HeroRepository heroRepository;
 
     @PostMapping("/add")
-    public void saveVideo(@RequestBody Hero video){
-        System.out.println(video);
-        heroRepository.save(video);
+    public void saveVideo(@RequestBody Hero hero){
+        System.out.println(hero);
+        heroRepository.save(hero);
     }
 
     @GetMapping("/test")
