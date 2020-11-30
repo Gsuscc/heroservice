@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 public class HeroController {
 
+    @Autowired
     public HeroRepository heroRepository;
 
     @PostMapping("/add")
-    public void saveVideo(@RequestBody Hero hero){
+    public void saveHero(@RequestBody Hero hero){
         System.out.println(hero);
         heroRepository.save(hero);
     }
