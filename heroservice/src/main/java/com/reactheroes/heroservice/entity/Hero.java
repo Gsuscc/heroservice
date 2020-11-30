@@ -35,7 +35,9 @@ public class Hero {
     private Integer cost;
 
     public void calculateCost() {
-        //TODO
+        cost = 10 + name.length() + powerstats.getAllStats()
+                .stream()
+                .reduce(0, (mem, element) -> mem += element == null ? 1 : element > 90 ? element * 3 : element);
     }
 
 }
