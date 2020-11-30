@@ -10,6 +10,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
+import java.util.Arrays;
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -29,4 +32,15 @@ public class Powerstats {
     @OneToOne(mappedBy = "powerstats")
     private Hero hero;
 
+
+    public List<Integer> getAllStats() {
+        return Arrays.asList(
+                getCombat(),
+                getDurability(),
+                getIntelligence(),
+                getPower(),
+                getSpeed(),
+                getStrength()
+        );
+    }
 }
