@@ -1,5 +1,6 @@
 package com.reactheroes.heroservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +26,11 @@ public class Appearance {
     private List<String> height;
     @ElementCollection
     private List<String> weight;
+
+    @JsonProperty(value = "eye-color")
     private String eyeColor;
+
+    @JsonProperty(value = "hair-color")
     private String hairColor;
 
 

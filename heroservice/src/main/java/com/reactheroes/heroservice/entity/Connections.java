@@ -1,14 +1,12 @@
 package com.reactheroes.heroservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -21,7 +19,11 @@ public class Connections {
     @GeneratedValue
     private Long id;
 
+    @Column(columnDefinition = "TEXT")
+    @JsonProperty(value = "group-affiliation")
     private String groupAffiliation;
+
+    @Column(columnDefinition = "TEXT")
     private String relatives;
 
     @OneToOne(mappedBy = "connections")

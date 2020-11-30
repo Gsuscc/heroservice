@@ -5,10 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Data
 @Entity
@@ -22,6 +19,8 @@ public class Work {
     private Long id;
 
     private String occupation;
+
+    @Column(columnDefinition = "TEXT")
     private String base;
 
     @OneToOne(mappedBy = "work")
