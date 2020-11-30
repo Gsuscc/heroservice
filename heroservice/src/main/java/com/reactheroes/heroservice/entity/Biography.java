@@ -1,5 +1,7 @@
 package com.reactheroes.heroservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -15,6 +17,7 @@ public class Biography {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
     @JsonProperty(value = "full-name")
@@ -36,6 +39,7 @@ public class Biography {
     private String alignment;
 
     @OneToOne(mappedBy = "biography")
+    @JsonBackReference
     private Hero hero;
 
 }

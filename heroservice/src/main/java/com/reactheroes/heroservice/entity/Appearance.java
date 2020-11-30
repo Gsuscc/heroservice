@@ -1,5 +1,7 @@
 package com.reactheroes.heroservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -19,6 +21,7 @@ public class Appearance {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
     private String gender;
     private String race;
@@ -33,7 +36,7 @@ public class Appearance {
     @JsonProperty(value = "hair-color")
     private String hairColor;
 
-
+    @JsonBackReference
     @OneToOne(mappedBy = "appearance")
     private Hero hero;
 

@@ -1,5 +1,7 @@
 package com.reactheroes.heroservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,7 @@ public class Powerstats {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
     private Integer intelligence;
     private Integer strength;
@@ -30,9 +33,11 @@ public class Powerstats {
     private Integer power;
     private Integer combat;
     @OneToOne(mappedBy = "powerstats")
+    @JsonBackReference
     private Hero hero;
 
 
+    @JsonIgnore
     public List<Integer> getAllStats() {
         return Arrays.asList(
                 getCombat(),

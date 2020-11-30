@@ -3,23 +3,40 @@ package com.reactheroes.heroservice.controller;
 import com.reactheroes.heroservice.entity.Hero;
 import com.reactheroes.heroservice.repository.HeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin
 public class HeroController {
 
-    @Autowired
+
     public HeroRepository heroRepository;
 
-    @PostMapping("/add")
-    public void saveHero(@RequestBody Hero hero){
-        System.out.println(hero);
-        heroRepository.save(hero);
+    @Autowired
+    public HeroController(HeroRepository heroRepository) {
+        this.heroRepository = heroRepository;
     }
 
-    @GetMapping("/test")
-    public String getTest() { return "Test Working!"; };
+
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Hero> getHero(@PathVariable Long id){
+        return ResponseEntity.ok(heroRepository.findById(id).get());
+    }
+
+    @GetMapping("heroes")
+    public ResponseEntity<Object> getHeroesPerPage(@RequestParam Integer page){
+        return ResponseEntity.ok(heroRepository.findAll(PageRequest.of(page, 10)));
+    }
+
+
+    @GetMapping("/search")
+    public ResponseEntity<Object> getHeroByName(@RequestParam String value){
+//        return null;
+        return ResponseEntity.ok(heroRepository.getByName(value, PageRequest.of(0,2)));
+    }
 
 
 }
