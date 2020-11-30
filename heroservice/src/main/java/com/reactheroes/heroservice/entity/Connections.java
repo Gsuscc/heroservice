@@ -1,5 +1,7 @@
 package com.reactheroes.heroservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +19,7 @@ public class Connections {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
     @Column(columnDefinition = "TEXT")
@@ -27,6 +30,7 @@ public class Connections {
     private String relatives;
 
     @OneToOne(mappedBy = "connections")
+    @JsonBackReference
     private Hero hero;
 
 }

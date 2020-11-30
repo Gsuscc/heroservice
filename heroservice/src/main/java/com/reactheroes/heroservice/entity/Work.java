@@ -1,5 +1,7 @@
 package com.reactheroes.heroservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +18,7 @@ public class Work {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private Long id;
 
     private String occupation;
@@ -24,6 +27,7 @@ public class Work {
     private String base;
 
     @OneToOne(mappedBy = "work")
+    @JsonBackReference
     private Hero hero;
 
 }
