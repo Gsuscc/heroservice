@@ -28,6 +28,7 @@ public class Appearance {
     private String eyeColor;
     private String hairColor;
 
+
     @OneToOne(mappedBy = "appearance")
     private Hero hero;
 
