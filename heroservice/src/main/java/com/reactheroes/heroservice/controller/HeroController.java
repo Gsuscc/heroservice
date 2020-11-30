@@ -3,9 +3,7 @@ package com.reactheroes.heroservice.controller;
 import com.reactheroes.heroservice.entity.Hero;
 import com.reactheroes.heroservice.repository.HeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.convert.ReadingConverter;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,12 +20,13 @@ public class HeroController {
     }
 
 
-    @GetMapping("/hero")
-    public ResponseEntity<Hero> getHero(@RequestParam Long id){
+
+    @GetMapping("/get/{id}")
+    public ResponseEntity<Hero> getHero(@PathVariable Long id){
         return ResponseEntity.ok(heroRepository.findById(id).get());
     }
 
-    @GetMapping("/heroes")
+    @GetMapping("heroes")
     public ResponseEntity<Object> getHeroesPerPage(@RequestParam Integer page){
         return ResponseEntity.ok(heroRepository.findAll(PageRequest.of(page, 10)));
     }
