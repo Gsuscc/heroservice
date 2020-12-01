@@ -76,7 +76,6 @@ public class JwtTokenServices {
     Authentication parseUserFromTokenInfo(String token) throws UsernameNotFoundException {
         Claims body = Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody();
         String username = body.getSubject();
-
         return new UsernamePasswordAuthenticationToken(username, "");
     }
 }
