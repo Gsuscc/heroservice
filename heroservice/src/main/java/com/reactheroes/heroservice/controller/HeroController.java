@@ -26,7 +26,7 @@ public class HeroController {
         return ResponseEntity.ok(heroRepository.findById(id).get());
     }
 
-    @GetMapping("heroes")
+    @GetMapping("/heroes")
     public ResponseEntity<Object> getHeroesPerPage(@RequestParam Integer page){
         return ResponseEntity.ok(heroRepository.findAll(PageRequest.of(page, 10)));
     }
