@@ -13,7 +13,7 @@ import java.io.IOException;
 
 public class JwtTokenFilter extends GenericFilterBean {
 
-    private JwtTokenServices jwtTokenServices;
+    private final JwtTokenServices jwtTokenServices;
 
     JwtTokenFilter(JwtTokenServices jwtTokenServices) {
         this.jwtTokenServices = jwtTokenServices;

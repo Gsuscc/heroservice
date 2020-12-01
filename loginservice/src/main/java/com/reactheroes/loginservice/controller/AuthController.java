@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/auth")
 public class AuthController {
 
     UserCredentialsDao userCredentialsDao;
