@@ -34,7 +34,6 @@ public class HeroController {
 
     @GetMapping("/search")
     public ResponseEntity<Object> getHeroByName(@RequestParam String value){
-//        return null;
         return ResponseEntity.ok(heroRepository.getByName(value, PageRequest.of(0,2)));
     }
 
