@@ -58,7 +58,7 @@ public class AuthController {
             String token = jwtTokenServices.createToken(email);
 
             Cookie cookie = new Cookie("token", token);
-            cookie.setMaxAge(7 * 24 * 60 * 60);
+            cookie.setMaxAge(10 * 60 * 60);
             cookie.setSecure(true);
             cookie.setHttpOnly(true);
             response.addCookie(cookie);
