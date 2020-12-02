@@ -41,10 +41,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         } else {
             logger.warn("Couldn't find bearer string, will ignore the header");
         }
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null && jwtTokenUtil.validateToken(authToken)) {
-            Authentication auth = jwtTokenUtil.parseUserFromTokenInfo(authToken);
-            // Marks the user as authenticated.
-            // If this code does not run, the request will fail for routes that are configured to need authentication
+        if (username != null && jwtTokenUtil.validateToken(authToken)) {
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                    username, null, null);
+            logger.info("Authenticated user " + username + ", setting security context");
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
         chain.doFilter(req, res);
