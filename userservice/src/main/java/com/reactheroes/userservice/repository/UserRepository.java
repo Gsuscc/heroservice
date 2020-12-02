@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import javax.transaction.Transactional;
 import java.util.Set;
 
 public interface UserRepository extends JpaRepository<UserDetail, Long> {
@@ -21,6 +22,7 @@ public interface UserRepository extends JpaRepository<UserDetail, Long> {
     @Query("SELECT ud.balance FROM UserDetail ud WHERE ud.email = :email")
     Long getUserBalance(@Param("email") String email);
 
+    @Transactional
     @Modifying
     @Query("UPDATE UserDetail ud SET ud.balance = :newBalance WHERE ud.email = :email")
     void setUserBalance(@Param("newBalance") Long newBalance, @Param("email") String email);

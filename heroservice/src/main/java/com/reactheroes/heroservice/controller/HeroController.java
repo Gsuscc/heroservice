@@ -7,6 +7,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @CrossOrigin
 public class HeroController {
@@ -37,6 +39,11 @@ public class HeroController {
         return ResponseEntity.ok(heroRepository.getByName(value, PageRequest.of(0,2)));
     }
 
+    @GetMapping("/price")
+    public ResponseEntity<?> getHeroPrice(@RequestParam Long card){
+        Long price = heroRepository.getPrice(card);
+        return ResponseEntity.ok(Map.of("price",price));
+    }
 
 }
 

@@ -45,6 +45,11 @@ public class UserDetailJpa implements UserDetailDao {
     }
 
     @Override
+    public Long getUserBalance(String email) {
+       return userRepository.getUserBalance(email);
+    }
+
+    @Override
     public void incrementBalance(Long amount, String email) {
         Long currentBalance = userRepository.getUserBalance(email);
         userRepository.setUserBalance(currentBalance + amount, email);
