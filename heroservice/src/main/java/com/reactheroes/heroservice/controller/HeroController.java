@@ -30,7 +30,7 @@ public class HeroController {
 
     @GetMapping("/heroes")
     public ResponseEntity<Object> getHeroesPerPage(@RequestParam Integer page){
-        return ResponseEntity.ok(heroRepository.findAll(PageRequest.of(page, 10)));
+        return ResponseEntity.ok(heroRepository.findAll(PageRequest.of(page, 18)));
     }
 
 
