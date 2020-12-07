@@ -63,7 +63,6 @@ public class UserController {
             return ResponseEntity.ok("Success");
         }
          return new ResponseEntity<>("Not enough funds", HttpStatus.NOT_IMPLEMENTED);
-
     }
 
 }

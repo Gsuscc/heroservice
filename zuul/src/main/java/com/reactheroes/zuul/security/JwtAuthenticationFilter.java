@@ -13,6 +13,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,13 +25,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
-        String header = req.getHeader("Authorization");
+        String token = jwtTokenUtil.getTokenFromRequest(req);
         String username = null;
-        String authToken = null;
-        if (header != null && header.startsWith("Bearer ")) {
-            authToken = header.substring(7);
+        if (token != null) {
             try {
-                username = jwtTokenUtil.getUsernameFromToken(authToken);
+                username = jwtTokenUtil.getUsernameFromToken(token);
             } catch (IllegalArgumentException e) {
                 logger.error("An error occured during getting username from token", e);
             } catch (ExpiredJwtException e) {
@@ -39,9 +38,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 logger.error("Authentication Failed. Username or Password not valid.");
             }
         } else {
-            logger.warn("Couldn't find bearer string, will ignore the header");
+            logger.warn("Couldn't find authorization token");
         }
-        if (username != null && jwtTokenUtil.validateToken(authToken)) {
+        if (username != null && jwtTokenUtil.validateToken(token)) {
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
                     username, null, null);
             logger.info("Authenticated user " + username + ", setting security context");

@@ -56,8 +56,9 @@ public class AuthController {
 
             Cookie cookie = new Cookie("token", token);
             cookie.setMaxAge(10 * 60 * 60);
-            cookie.setSecure(true);
+            cookie.setSecure(false);
             cookie.setHttpOnly(true);
+            cookie.setPath("/");
             response.addCookie(cookie);
             return ResponseEntity.ok("Success");
         } catch (AuthenticationException e) {
