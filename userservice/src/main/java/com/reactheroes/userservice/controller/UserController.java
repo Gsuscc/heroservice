@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 public class UserController {
@@ -49,12 +50,13 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    private ResponseEntity<?> createUserDetails(HttpServletRequest httpServletRequest, @RequestBody Nick nick) {
-        if (userDetailDao.isNickAlreadyTaken(nick.getNick())) {
+    private ResponseEntity<?> createUserDetails(@RequestBody Map<String,String> body, HttpServletRequest httpServletRequest) {
+        String nick = body.get("nick");
+        if (userDetailDao.isNickAlreadyTaken(nick)) {
             return new ResponseEntity<>("Nickname is already taken!", HttpStatus.IM_USED);
         }
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        userDetailDao.createNewUserDetail(nick.getNick(), email);
+        userDetailDao.createNewUserDetail(nick, email);
         return ResponseEntity.ok("Success");
     }
 
