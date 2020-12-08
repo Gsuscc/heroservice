@@ -4,6 +4,7 @@ import com.reactheroes.userservice.dao.interfaces.HeroCardDao;
 import com.reactheroes.userservice.dao.interfaces.UserDetailDao;
 import com.reactheroes.userservice.entity.HeroCard;
 import com.reactheroes.userservice.entity.UserDetail;
+import com.reactheroes.userservice.model.Hero;
 import com.reactheroes.userservice.model.Nick;
 import com.reactheroes.userservice.security.JwtTokenServices;
 import com.reactheroes.userservice.service.HeroCallerService;
@@ -13,6 +14,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -50,13 +53,12 @@ public class UserController {
     }
 
     @PostMapping("/create")
-    private ResponseEntity<?> createUserDetails(@RequestBody Map<String,String> body, HttpServletRequest httpServletRequest) {
-        String nick = body.get("nick");
-        if (userDetailDao.isNickAlreadyTaken(nick)) {
+    private ResponseEntity<?> createUserDetails(@RequestBody Nick nick, HttpServletRequest httpServletRequest) {
+        if (userDetailDao.isNickAlreadyTaken(nick.getNick())) {
             return new ResponseEntity<>("Nickname is already taken!", HttpStatus.IM_USED);
         }
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        userDetailDao.createNewUserDetail(nick, email);
+        userDetailDao.createNewUserDetail(nick.getNick(), email);
         return ResponseEntity.ok("Success");
     }
 
@@ -70,10 +72,28 @@ public class UserController {
             UserDetail userDetail = userDetailDao.getUserDetail(email);
             userDetailDao.decrementBalance(cardPrice, email);
             HeroCard heroCard = HeroCard.builder().cardId(id).xp(0L).userDetail(userDetail).build();
-            heroCardDao.buyCard(heroCard);
+            heroCardDao.addCard(heroCard);
             return ResponseEntity.ok("Success");
         }
          return new ResponseEntity<>("Not enough funds", HttpStatus.NOT_IMPLEMENTED);
+    }
+
+    @GetMapping("/buypack")
+    private ResponseEntity<?> buyPackOfHeroes(HttpServletRequest httpServletRequest, @RequestParam int pack){
+        if(pack != 3 && pack != 5 && pack !=7) {
+            return new ResponseEntity<>("Invalid pack size", HttpStatus.BAD_REQUEST);
+        }
+        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
+        Long balance = userDetailDao.getUserBalance(email);
+        List<Hero> randomHeroes = new ArrayList<>();
+        UserDetail userDetail = userDetailDao.getUserDetail(email);
+        for (int i = 0; i < pack ; i++) {
+            Hero randomHero = heroCallerService.getRandomHero(pack);
+            randomHeroes.add(randomHero);
+            HeroCard heroCard = HeroCard.builder().cardId(randomHero.getId()).xp(0L).userDetail(userDetail).build();
+            heroCardDao.addCard(heroCard);
+        }
+        return ResponseEntity.ok(randomHeroes);
     }
 
 }

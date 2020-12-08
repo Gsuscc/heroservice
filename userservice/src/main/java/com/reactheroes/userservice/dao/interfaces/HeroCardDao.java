@@ -6,6 +6,6 @@ public interface HeroCardDao {
 
     void gatherXp(Long amount, Long id);
 
-    void buyCard(HeroCard heroCard);
+    void addCard(HeroCard heroCard);
 
 }

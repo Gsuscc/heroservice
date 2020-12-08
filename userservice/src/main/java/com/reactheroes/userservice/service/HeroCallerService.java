@@ -1,6 +1,7 @@
 package com.reactheroes.userservice.service;
 
 import com.reactheroes.userservice.model.CardPriceModel;
+import com.reactheroes.userservice.model.Hero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,12 @@ public class HeroCallerService {
     }
 
     public Long getCardPrice(Long id){
-        CardPriceModel body = restTemplate.getForEntity(BASE_URL + id.toString(), CardPriceModel.class).getBody();
+        CardPriceModel body = restTemplate.getForEntity(BASE_URL + "price?card=" + id.toString(), CardPriceModel.class).getBody();
         return body.getPrice();
+    }
+
+    public Hero getRandomHero(int pack){
+         return restTemplate.getForEntity(BASE_URL + "getrandom?pack=" + pack, Hero.class).getBody();
     }
 
 
