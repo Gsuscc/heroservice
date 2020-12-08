@@ -30,6 +30,15 @@ public class UserController {
         this.heroCardDao = heroCardDao;
     }
 
+    @GetMapping("/status")
+    private ResponseEntity<?> getStatus(HttpServletRequest httpServletRequest) {
+        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
+        if (userDetailDao.isUserDetailNotExist(email)) {
+            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
+        }
+        return ResponseEntity.ok(userDetailDao.getNickByEmail(email));
+    }
+
     @GetMapping("/mydetails")
     private ResponseEntity<Object> getMyDetails(HttpServletRequest httpServletRequest) {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);

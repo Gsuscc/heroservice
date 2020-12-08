@@ -3,6 +3,7 @@ package com.reactheroes.userservice.dao.implementations;
 import com.reactheroes.userservice.dao.interfaces.UserDetailDao;
 import com.reactheroes.userservice.entity.HeroCard;
 import com.reactheroes.userservice.entity.UserDetail;
+import com.reactheroes.userservice.model.Nick;
 import com.reactheroes.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +33,11 @@ public class UserDetailJpa implements UserDetailDao {
     @Override
     public boolean isNickAlreadyTaken(String nick) {
         return userRepository.existsByNick(nick);
+    }
+
+    @Override
+    public Nick getNickByEmail(String email) {
+        return new Nick(userRepository.findByEmailIs(email).getNick());
     }
 
     @Override
