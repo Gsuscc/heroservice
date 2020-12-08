@@ -66,13 +66,15 @@ public class AuthController {
             return new ResponseEntity<>("Invalid username/password supplied", HttpStatus.I_AM_A_TEAPOT);
         }
     }
-    @GetMapping("/logout")
+    @GetMapping("/clear")
     public ResponseEntity<Object> logoutUser(HttpServletRequest request, HttpServletResponse response){
         Cookie[] cookies = request.getCookies();
         for(Cookie cookie: cookies){
             String name = cookie.getName();
             Cookie toDelete = new Cookie(name, null);
             toDelete.setMaxAge(0);
+            toDelete.setPath("/");
+            toDelete.setHttpOnly(true);
             response.addCookie(toDelete);
         }
         return ResponseEntity.ok("Success");
