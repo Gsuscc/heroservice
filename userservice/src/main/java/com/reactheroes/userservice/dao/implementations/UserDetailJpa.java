@@ -8,6 +8,7 @@ import com.reactheroes.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 @Component
@@ -64,6 +65,7 @@ public class UserDetailJpa implements UserDetailDao {
     @Override
     public void decrementBalance(Long amount, String email) {
         Long currentBalance = userRepository.getUserBalance(email);
+        if (currentBalance - amount < 0L) throw new NoSuchElementException("Not enough money");
         userRepository.setUserBalance(currentBalance - amount, email);
     }
 

@@ -4,6 +4,7 @@ import com.reactheroes.userservice.dao.interfaces.HeroCardDao;
 import com.reactheroes.userservice.dao.interfaces.UserDetailDao;
 import com.reactheroes.userservice.entity.HeroCard;
 import com.reactheroes.userservice.entity.UserDetail;
+import com.reactheroes.userservice.model.Balance;
 import com.reactheroes.userservice.model.Hero;
 import com.reactheroes.userservice.model.Nick;
 import com.reactheroes.userservice.security.JwtTokenServices;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 public class UserController {
@@ -67,6 +69,11 @@ public class UserController {
         );
     }
 
+    @GetMapping("/balance")
+    private ResponseEntity<?> getBalance(HttpServletRequest httpServletRequest) {
+        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
+        return ResponseEntity.ok(new Balance(userDetailDao.getUserBalance(email)));
+    }
 
     @PostMapping("/create")
     private ResponseEntity<?> createUserDetails(@RequestBody Nick nick, HttpServletRequest httpServletRequest) {
@@ -100,7 +107,13 @@ public class UserController {
             return new ResponseEntity<>("Invalid pack size", HttpStatus.BAD_REQUEST);
         }
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        Long balance = userDetailDao.getUserBalance(email);
+        try {
+            if (pack == 3) userDetailDao.decrementBalance(1500L, email);
+            if (pack == 5) userDetailDao.decrementBalance(3000L, email);
+            if (pack == 7) userDetailDao.decrementBalance(7500L, email);
+        } catch (NoSuchElementException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         List<Hero> randomHeroes = new ArrayList<>();
         UserDetail userDetail = userDetailDao.getUserDetail(email);
         for (int i = 0; i < pack ; i++) {
