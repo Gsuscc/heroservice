@@ -17,6 +17,7 @@ import org.springframework.security.web.authentication.rememberme.CookieTheftExc
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,5 +65,16 @@ public class AuthController {
         } catch (AuthenticationException e) {
             return new ResponseEntity<>("Invalid username/password supplied", HttpStatus.I_AM_A_TEAPOT);
         }
+    }
+    @GetMapping("/logout")
+    public ResponseEntity<Object> logoutUser(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cookie: cookies){
+            String name = cookie.getName();
+            Cookie toDelete = new Cookie(name, null);
+            toDelete.setMaxAge(0);
+            response.addCookie(toDelete);
+        }
+        return ResponseEntity.ok("Success");
     }
 }
