@@ -8,6 +8,7 @@ import com.reactheroes.userservice.model.Hero;
 import com.reactheroes.userservice.model.Nick;
 import com.reactheroes.userservice.security.JwtTokenServices;
 import com.reactheroes.userservice.service.HeroCallerService;
+import com.reactheroes.userservice.service.HeroCardGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class UserController {
@@ -25,13 +25,15 @@ public class UserController {
     private final UserDetailDao userDetailDao;
     private final HeroCallerService heroCallerService;
     private final HeroCardDao heroCardDao;
+    private final HeroCardGenerator heroCardGenerator;
 
     @Autowired
-    public UserController(JwtTokenServices jwtTokenServices, UserDetailDao userDetailDao, HeroCallerService heroCallerService, HeroCardDao heroCardDao) {
+    public UserController(JwtTokenServices jwtTokenServices, UserDetailDao userDetailDao, HeroCallerService heroCallerService, HeroCardDao heroCardDao, HeroCardGenerator heroCardGenerator) {
         this.jwtTokenServices = jwtTokenServices;
         this.userDetailDao = userDetailDao;
         this.heroCallerService = heroCallerService;
         this.heroCardDao = heroCardDao;
+        this.heroCardGenerator = heroCardGenerator;
     }
 
     @GetMapping("/status")
@@ -51,6 +53,20 @@ public class UserController {
         }
         return ResponseEntity.ok(userDetailDao.getUserDetail(email));
     }
+
+    @GetMapping("/mycards")
+    private ResponseEntity<?> getMyCards(HttpServletRequest httpServletRequest) {
+        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
+        if (userDetailDao.isUserDetailNotExist(email)) {
+            return new ResponseEntity<>("Need to create first", HttpStatus.NOT_IMPLEMENTED);
+        }
+        return ResponseEntity.ok(
+                heroCardGenerator.generateUserCards(
+                        userDetailDao.getAllHeroCardsByUserEmail(email)
+                )
+        );
+    }
+
 
     @PostMapping("/create")
     private ResponseEntity<?> createUserDetails(@RequestBody Nick nick, HttpServletRequest httpServletRequest) {

@@ -20,5 +20,7 @@ public class Hero {
     private Connections connections;
     private Image image;
     private Integer cost;
+    private Integer level;
+    private Long cardid;
 
 }

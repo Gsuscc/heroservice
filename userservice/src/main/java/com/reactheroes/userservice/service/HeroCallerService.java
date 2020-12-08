@@ -29,5 +29,8 @@ public class HeroCallerService {
          return restTemplate.getForEntity(BASE_URL + "getrandom?pack=" + pack, Hero.class).getBody();
     }
 
+    public Hero getHeroById(Long id){
+        return restTemplate.getForEntity(BASE_URL + "get/" + id, Hero.class).getBody();
+    }
 
 }
