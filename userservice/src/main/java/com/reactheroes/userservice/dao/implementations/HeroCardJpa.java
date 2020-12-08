@@ -23,7 +23,7 @@ public class HeroCardJpa implements HeroCardDao {
     }
 
     @Override
-    public void buyCard(HeroCard heroCard) {
+    public void addCard(HeroCard heroCard) {
         heroCardRepository.save(heroCard);
     }
 }

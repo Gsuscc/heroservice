@@ -8,16 +8,21 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
+import java.util.Random;
 
 @RestController
 public class HeroController {
 
 
     public HeroRepository heroRepository;
+    private final Random random;
+
 
     @Autowired
-    public HeroController(HeroRepository heroRepository) {
+    public HeroController(HeroRepository heroRepository, Random random) {
         this.heroRepository = heroRepository;
+        this.random = random;
     }
 
 
@@ -42,6 +47,12 @@ public class HeroController {
     public ResponseEntity<?> getHeroPrice(@RequestParam Long card){
         Long price = heroRepository.getPrice(card);
         return ResponseEntity.ok(Map.of("price",price));
+    }
+
+    @GetMapping("/getrandom")
+    public ResponseEntity<?> getRandomHero(@RequestParam int pack){
+        Optional<Hero> hero = heroRepository.findById((long) (random.nextInt(731) + 1));
+        return ResponseEntity.ok(hero);
     }
 
 }
