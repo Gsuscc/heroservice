@@ -13,7 +13,6 @@ import java.util.Random;
 
 @Service
 public class PackGenerator {
-    private final HeroRepository heroRepository;
     private final Random random;
     private final List<Hero> common;
     private final List<Hero> uncommon;
@@ -23,7 +22,6 @@ public class PackGenerator {
 
     @Autowired
     public PackGenerator(HeroRepository heroRepository, Random random) {
-        this.heroRepository = heroRepository;
         this.common = heroRepository.getByRarity(Rarity.COMMON);
         this.uncommon = heroRepository.getByRarity(Rarity.UNCOMMON);
         this.rare = heroRepository.getByRarity(Rarity.RARE);
@@ -37,31 +35,27 @@ public class PackGenerator {
     }
 
     public Hero getPack3Card() {
+        final int LEGENDARY_CHANCE_RATE = 100000;
         final int EPIC_CHANCE_RATE = 3000;
         final int RARE_CHANCE_RATE = 400;
-        final int UNCOMMON_CHANCE_RATE = 3;
-        if (0 == random.nextInt(EPIC_CHANCE_RATE)) return getRandom(epic);
-        if (0 == random.nextInt(RARE_CHANCE_RATE)) return getRandom(rare);
-        if (0 == random.nextInt(UNCOMMON_CHANCE_RATE)) return getRandom(uncommon);
-        return getRandom(common);
+        return getHero(LEGENDARY_CHANCE_RATE, EPIC_CHANCE_RATE, RARE_CHANCE_RATE);
     }
 
     public Hero getPack5Card() {
         final int LEGENDARY_CHANCE_RATE = 10000;
         final int EPIC_CHANCE_RATE = 1000;
         final int RARE_CHANCE_RATE = 100;
-        final int UNCOMMON_CHANCE_RATE = 2;
-        if (0 == random.nextInt(LEGENDARY_CHANCE_RATE)) return getRandom(legendary);
-        if (0 == random.nextInt(EPIC_CHANCE_RATE)) return getRandom(epic);
-        if (0 == random.nextInt(RARE_CHANCE_RATE)) return getRandom(rare);
-        if (0 == random.nextInt(UNCOMMON_CHANCE_RATE)) return getRandom(uncommon);
-        return getRandom(common);
+        return getHero(LEGENDARY_CHANCE_RATE, EPIC_CHANCE_RATE, RARE_CHANCE_RATE);
     }
 
     public Hero getPack7Card() {
         final int LEGENDARY_CHANCE_RATE = 3000;
         final int EPIC_CHANCE_RATE = 200;
         final int RARE_CHANCE_RATE = 40;
+        return getHero(LEGENDARY_CHANCE_RATE, EPIC_CHANCE_RATE, RARE_CHANCE_RATE);
+    }
+
+    private Hero getHero(int LEGENDARY_CHANCE_RATE, int EPIC_CHANCE_RATE, int RARE_CHANCE_RATE) {
         final int UNCOMMON_CHANCE_RATE = 2;
         if (0 == random.nextInt(LEGENDARY_CHANCE_RATE)) return getRandom(legendary);
         if (0 == random.nextInt(EPIC_CHANCE_RATE)) return getRandom(epic);
@@ -90,9 +84,9 @@ public class PackGenerator {
 
     public HeroPack getPack7() {
         List<Hero> heroes = new ArrayList<>();
-        heroes.add(getRandom(rare));
-        heroes.add(getRandom(rare));
         heroes.add(getRandom(epic));
+        heroes.add(getRandom(rare));
+        heroes.add(getRandom(rare));
         while (heroes.size() < 7) {
             heroes.add(getPack7Card());
         }
