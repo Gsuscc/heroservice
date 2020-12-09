@@ -19,7 +19,7 @@ public class Hero {
     private Work work;
     private Connections connections;
     private Image image;
-    private Integer cost;
+    private String rarity;
     private Integer level;
     private Long cardid;
 

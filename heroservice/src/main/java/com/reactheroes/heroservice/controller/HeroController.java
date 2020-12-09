@@ -2,27 +2,23 @@ package com.reactheroes.heroservice.controller;
 
 import com.reactheroes.heroservice.entity.Hero;
 import com.reactheroes.heroservice.repository.HeroRepository;
+import com.reactheroes.heroservice.service.PackGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
-import java.util.Optional;
-import java.util.Random;
 
 @RestController
 public class HeroController {
 
-
     public HeroRepository heroRepository;
-    private final Random random;
-
+    private final PackGenerator packGenerator;
 
     @Autowired
-    public HeroController(HeroRepository heroRepository, Random random) {
+    public HeroController(HeroRepository heroRepository, PackGenerator packGenerator) {
         this.heroRepository = heroRepository;
-        this.random = random;
+        this.packGenerator = packGenerator;
     }
 
 
@@ -44,9 +40,11 @@ public class HeroController {
     }
 
     @GetMapping("/getrandom")
-    public ResponseEntity<?> getRandomHero(@RequestParam int pack){
-        Optional<Hero> hero = heroRepository.findById((long) (random.nextInt(731) + 1));
-        return ResponseEntity.ok(hero);
+    public ResponseEntity<?> getRandomHeroes(@RequestParam int pack){
+        if (pack == 3) return ResponseEntity.ok(packGenerator.getPack3());
+        if (pack == 5) return ResponseEntity.ok(packGenerator.getPack5());
+        if (pack == 7) return ResponseEntity.ok(packGenerator.getPack7());
+        return new ResponseEntity<>("Invalid pack size!", HttpStatus.I_AM_A_TEAPOT);
     }
 
 }

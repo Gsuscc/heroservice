@@ -6,6 +6,7 @@ import com.reactheroes.userservice.entity.HeroCard;
 import com.reactheroes.userservice.entity.UserDetail;
 import com.reactheroes.userservice.model.Balance;
 import com.reactheroes.userservice.model.Hero;
+import com.reactheroes.userservice.model.HeroPack;
 import com.reactheroes.userservice.model.Nick;
 import com.reactheroes.userservice.security.JwtTokenServices;
 import com.reactheroes.userservice.service.HeroCallerService;
@@ -91,6 +92,8 @@ public class UserController {
             return new ResponseEntity<>("Invalid pack size", HttpStatus.BAD_REQUEST);
         }
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
+        UserDetail userDetail = userDetailDao.getUserDetail(email);
+        HeroPack heroPack = heroCallerService.getRandomHero(pack);
         try {
             if (pack == 3) userDetailDao.decrementBalance(1500L, email);
             if (pack == 5) userDetailDao.decrementBalance(3000L, email);
@@ -98,15 +101,11 @@ public class UserController {
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-        List<Hero> randomHeroes = new ArrayList<>();
-        UserDetail userDetail = userDetailDao.getUserDetail(email);
-        for (int i = 0; i < pack ; i++) {
-            Hero randomHero = heroCallerService.getRandomHero(pack);
-            randomHeroes.add(randomHero);
-            HeroCard heroCard = HeroCard.builder().cardId(randomHero.getId()).xp(0L).userDetail(userDetail).build();
+        for (Hero hero: heroPack.getHeroes()) {
+            HeroCard heroCard = HeroCard.builder().cardId(hero.getId()).xp(0L).userDetail(userDetail).build();
             heroCardDao.addCard(heroCard);
         }
-        return ResponseEntity.ok(randomHeroes);
+        return ResponseEntity.ok(heroPack.getHeroes());
     }
 
 }
