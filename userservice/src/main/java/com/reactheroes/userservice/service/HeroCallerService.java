@@ -20,11 +20,6 @@ public class HeroCallerService {
         this.restTemplate = restTemplate;
     }
 
-    public Long getCardPrice(Long id){
-        CardPriceModel body = restTemplate.getForEntity(BASE_URL + "price?card=" + id.toString(), CardPriceModel.class).getBody();
-        return body.getPrice();
-    }
-
     public Hero getRandomHero(int pack){
          return restTemplate.getForEntity(BASE_URL + "getrandom?pack=" + pack, Hero.class).getBody();
     }

@@ -85,22 +85,6 @@ public class UserController {
         return ResponseEntity.ok("Success");
     }
 
-
-    @GetMapping("/buyhero")
-    private ResponseEntity<?> buyHero(HttpServletRequest httpServletRequest, @RequestParam Long id){
-        Long cardPrice = heroCallerService.getCardPrice(id);
-        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        Long balance = userDetailDao.getUserBalance(email);
-        if (balance >= cardPrice){
-            UserDetail userDetail = userDetailDao.getUserDetail(email);
-            userDetailDao.decrementBalance(cardPrice, email);
-            HeroCard heroCard = HeroCard.builder().cardId(id).xp(0L).userDetail(userDetail).build();
-            heroCardDao.addCard(heroCard);
-            return ResponseEntity.ok("Success");
-        }
-         return new ResponseEntity<>("Not enough funds", HttpStatus.NOT_IMPLEMENTED);
-    }
-
     @GetMapping("/buypack")
     private ResponseEntity<?> buyPackOfHeroes(HttpServletRequest httpServletRequest, @RequestParam int pack){
         if(pack != 3 && pack != 5 && pack !=7) {

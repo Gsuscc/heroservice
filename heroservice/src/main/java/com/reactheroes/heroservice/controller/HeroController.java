@@ -43,12 +43,6 @@ public class HeroController {
         return ResponseEntity.ok(heroRepository.getByName(value, PageRequest.of(0,10)));
     }
 
-    @GetMapping("/price")
-    public ResponseEntity<?> getHeroPrice(@RequestParam Long card){
-        Long price = heroRepository.getPrice(card);
-        return ResponseEntity.ok(Map.of("price",price));
-    }
-
     @GetMapping("/getrandom")
     public ResponseEntity<?> getRandomHero(@RequestParam int pack){
         Optional<Hero> hero = heroRepository.findById((long) (random.nextInt(731) + 1));

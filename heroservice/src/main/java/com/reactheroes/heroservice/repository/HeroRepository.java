@@ -16,8 +16,5 @@ public interface HeroRepository extends JpaRepository<Hero, Long> {
             "LIKE lower(concat('%', :value,'%'))")
     List<Hero> getByName(String value, Pageable page);
 
-    @Query("SELECT h.cost" +
-            " FROM Hero h WHERE h.id = :card")
-    Long getPrice(Long card);
 }
 
