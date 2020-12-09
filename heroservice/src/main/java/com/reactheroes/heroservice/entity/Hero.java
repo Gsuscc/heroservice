@@ -1,5 +1,8 @@
 package com.reactheroes.heroservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,22 +20,29 @@ public class Hero {
     @Id
     private Long id;
     private String name;
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     private Powerstats powerstats;
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     private Biography biography;
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     private Appearance appearance;
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     private Work work;
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     private Connections connections;
+    @JsonManagedReference
     @OneToOne(cascade = CascadeType.ALL)
     private Image image;
 
     @Enumerated(EnumType.STRING)
     private Rarity rarity;
 
+    @JsonIgnore
     @Transient
     private Integer cost;
 

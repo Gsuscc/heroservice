@@ -24,9 +24,7 @@ public class HeroCallerService {
     }
 
     public HeroPack getRandomHero(int pack){
-        Hero[] heroes = restTemplate.getForEntity(BASE_URL + "getrandom?pack=" + pack, Hero[].class).getBody();
-        return new HeroPack(Arrays.asList(heroes));
-//        return restTemplate.getForObject(BASE_URL + "getrandom?pack=" + pack, HeroPack.class);
+        return restTemplate.getForEntity(BASE_URL + "getrandom?pack=" + pack, HeroPack.class).getBody();
     }
 
     public Hero getHeroById(Long id){

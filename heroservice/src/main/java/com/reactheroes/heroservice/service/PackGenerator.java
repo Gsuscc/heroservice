@@ -2,6 +2,7 @@ package com.reactheroes.heroservice.service;
 
 import com.reactheroes.heroservice.entity.Hero;
 import com.reactheroes.heroservice.entity.Rarity;
+import com.reactheroes.heroservice.model.HeroPack;
 import com.reactheroes.heroservice.repository.HeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -69,25 +70,25 @@ public class PackGenerator {
         return getRandom(common);
     }
 
-    public List<Hero> getPack3() {
+    public HeroPack getPack3() {
         List<Hero> heroes = new ArrayList<>();
         while (heroes.size() < 3) {
             heroes.add(getPack3Card());
         }
-        return heroes;
+        return new HeroPack(heroes);
     }
 
-    public List<Hero> getPack5() {
+    public HeroPack getPack5() {
         List<Hero> heroes = new ArrayList<>();
         heroes.add(getRandom(rare));
         heroes.add(getRandom(rare));
         while (heroes.size() < 5) {
             heroes.add(getPack5Card());
         }
-        return heroes;
+        return new HeroPack(heroes);
     }
 
-    public List<Hero> getPack7() {
+    public HeroPack getPack7() {
         List<Hero> heroes = new ArrayList<>();
         heroes.add(getRandom(rare));
         heroes.add(getRandom(rare));
@@ -95,7 +96,7 @@ public class PackGenerator {
         while (heroes.size() < 7) {
             heroes.add(getPack7Card());
         }
-        return heroes;
+        return new HeroPack(heroes);
     }
 
 }
