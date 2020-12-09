@@ -40,7 +40,7 @@ public class HeroController {
 
     @GetMapping("/search")
     public ResponseEntity<Object> getHeroByName(@RequestParam String value){
-        return ResponseEntity.ok(heroRepository.getByName(value, PageRequest.of(0,2)));
+        return ResponseEntity.ok(heroRepository.getByName(value, PageRequest.of(0,10)));
     }
 
     @GetMapping("/price")
