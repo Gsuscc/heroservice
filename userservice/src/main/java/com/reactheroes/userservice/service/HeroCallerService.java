@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Arrays;
+
 @Service
 public class HeroCallerService {
 
@@ -22,7 +24,9 @@ public class HeroCallerService {
     }
 
     public HeroPack getRandomHero(int pack){
-         return restTemplate.getForEntity(BASE_URL + "getrandom?pack=" + pack, HeroPack.class).getBody();
+        Hero[] heroes = restTemplate.getForEntity(BASE_URL + "getrandom?pack=" + pack, Hero[].class).getBody();
+        return new HeroPack(Arrays.asList(heroes));
+//        return restTemplate.getForObject(BASE_URL + "getrandom?pack=" + pack, HeroPack.class);
     }
 
     public Hero getHeroById(Long id){
