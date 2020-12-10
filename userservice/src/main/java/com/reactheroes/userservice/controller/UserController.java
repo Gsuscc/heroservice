@@ -12,13 +12,12 @@ import com.reactheroes.userservice.security.JwtTokenServices;
 import com.reactheroes.userservice.service.HeroCallerService;
 import com.reactheroes.userservice.service.HeroCardGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -51,23 +50,16 @@ public class UserController {
     @GetMapping("/mydetails")
     private ResponseEntity<Object> getMyDetails(HttpServletRequest httpServletRequest) {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        if (userDetailDao.isUserDetailNotExist(email)) {
-            return new ResponseEntity<>("Need to create first", HttpStatus.NOT_IMPLEMENTED);
-        }
         return ResponseEntity.ok(userDetailDao.getUserDetail(email));
     }
 
     @GetMapping("/mycards")
-    private ResponseEntity<?> getMyCards(HttpServletRequest httpServletRequest) {
+    private ResponseEntity<?> getMyCards(@RequestParam int page, HttpServletRequest httpServletRequest) {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        if (userDetailDao.isUserDetailNotExist(email)) {
-            return new ResponseEntity<>("Need to create first", HttpStatus.NOT_IMPLEMENTED);
-        }
-        return ResponseEntity.ok(
-                heroCardGenerator.generateUserCards(
-                        userDetailDao.getAllHeroCardsByUserEmail(email)
-                )
-        );
+        UserDetail userDetail = userDetailDao.getUserDetail(email);
+        Page<HeroCard> heroCards = heroCardDao.getHeroCardsPageForUser(userDetail, page);
+        heroCardGenerator.addCardInfosToUserCards(heroCards);
+        return ResponseEntity.ok(heroCards);
     }
 
     @GetMapping("/balance")

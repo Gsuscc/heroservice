@@ -21,6 +21,7 @@ public class Hero {
     private Image image;
     private String rarity;
     private Integer level;
+    private Long xp;
     private Long cardid;
 
 }

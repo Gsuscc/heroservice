@@ -4,7 +4,7 @@ import com.reactheroes.userservice.entity.HeroCard;
 import com.reactheroes.userservice.entity.UserDetail;
 import com.reactheroes.userservice.model.Nick;
 
-import java.util.Set;
+import java.util.List;
 
 public interface UserDetailDao {
 
@@ -16,6 +16,4 @@ public interface UserDetailDao {
     Long getUserBalance(String email);
     void incrementBalance(Long amount, String email);
     void decrementBalance(Long amount, String email);
-    Set<HeroCard> getAllHeroCardsByUserEmail(String email);
-
 }

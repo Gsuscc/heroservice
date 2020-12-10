@@ -1,7 +1,7 @@
 package com.reactheroes.userservice.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.reactheroes.userservice.model.Hero;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -26,4 +26,7 @@ public class HeroCard {
     @JsonBackReference
     @ManyToOne()
     private UserDetail userDetail;
+
+    @Transient
+    private Hero hero;
 }
