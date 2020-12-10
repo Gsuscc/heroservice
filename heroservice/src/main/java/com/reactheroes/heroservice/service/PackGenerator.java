@@ -34,21 +34,21 @@ public class PackGenerator {
         return heroes.get(random.nextInt(heroes.size()));
     }
 
-    public Hero getPack3Card() {
+    public Hero getPack4Card() {
         final int LEGENDARY_CHANCE_RATE = 100000;
         final int EPIC_CHANCE_RATE = 3000;
         final int RARE_CHANCE_RATE = 400;
         return getHero(LEGENDARY_CHANCE_RATE, EPIC_CHANCE_RATE, RARE_CHANCE_RATE);
     }
 
-    public Hero getPack5Card() {
+    public Hero getPack6Card() {
         final int LEGENDARY_CHANCE_RATE = 10000;
         final int EPIC_CHANCE_RATE = 1000;
         final int RARE_CHANCE_RATE = 100;
         return getHero(LEGENDARY_CHANCE_RATE, EPIC_CHANCE_RATE, RARE_CHANCE_RATE);
     }
 
-    public Hero getPack7Card() {
+    public Hero getPack8Card() {
         final int LEGENDARY_CHANCE_RATE = 3000;
         final int EPIC_CHANCE_RATE = 200;
         final int RARE_CHANCE_RATE = 40;
@@ -64,31 +64,31 @@ public class PackGenerator {
         return getRandom(common);
     }
 
-    public HeroPack getPack3() {
+    public HeroPack getPack4() {
         List<Hero> heroes = new ArrayList<>();
-        while (heroes.size() < 3) {
-            heroes.add(getPack3Card());
+        while (heroes.size() < 4) {
+            heroes.add(getPack4Card());
         }
         return new HeroPack(heroes);
     }
 
-    public HeroPack getPack5() {
+    public HeroPack getPack6() {
         List<Hero> heroes = new ArrayList<>();
         heroes.add(getRandom(rare));
         heroes.add(getRandom(rare));
-        while (heroes.size() < 5) {
-            heroes.add(getPack5Card());
+        while (heroes.size() < 6) {
+            heroes.add(getPack6Card());
         }
         return new HeroPack(heroes);
     }
 
-    public HeroPack getPack7() {
+    public HeroPack getPack8() {
         List<Hero> heroes = new ArrayList<>();
         heroes.add(getRandom(epic));
         heroes.add(getRandom(rare));
         heroes.add(getRandom(rare));
-        while (heroes.size() < 7) {
-            heroes.add(getPack7Card());
+        while (heroes.size() < 8) {
+            heroes.add(getPack8Card());
         }
         return new HeroPack(heroes);
     }

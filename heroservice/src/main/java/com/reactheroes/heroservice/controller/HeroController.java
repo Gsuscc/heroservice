@@ -41,9 +41,9 @@ public class HeroController {
 
     @GetMapping("/getrandom")
     public ResponseEntity<?> getRandomHeroes(@RequestParam int pack){
-        if (pack == 3) return ResponseEntity.ok(packGenerator.getPack3());
-        if (pack == 5) return ResponseEntity.ok(packGenerator.getPack5());
-        if (pack == 7) return ResponseEntity.ok(packGenerator.getPack7());
+        if (pack == 4) return ResponseEntity.ok(packGenerator.getPack4());
+        if (pack == 6) return ResponseEntity.ok(packGenerator.getPack6());
+        if (pack == 8) return ResponseEntity.ok(packGenerator.getPack8());
         return new ResponseEntity<>("Invalid pack size!", HttpStatus.I_AM_A_TEAPOT);
     }
 

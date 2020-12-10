@@ -3,11 +3,8 @@ package com.reactheroes.userservice.service;
 import com.reactheroes.userservice.entity.HeroCard;
 import com.reactheroes.userservice.model.Hero;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
 @Service
 public class HeroCardGenerator {
@@ -34,14 +31,15 @@ public class HeroCardGenerator {
         return 13;
     }
 
-    public List<Hero> generateUserCards(Set<HeroCard> heroCards) {
-        List<Hero> heroes = new ArrayList<>();
-        for (HeroCard card: heroCards) {
-            Hero hero = heroCallerService.getHeroById(card.getCardId());
-            hero.setCardid(card.getId());
-            hero.setLevel(getLevel(card.getXp()));
-            heroes.add(hero);
-        }
-        return heroes;
+    private void generateUserCard(HeroCard heroCard) {
+        Hero hero = heroCallerService.getHeroById(heroCard.getCardId());
+        hero.setLevel(getLevel(heroCard.getXp()));
+        hero.setXp(heroCard.getXp());
+        hero.setCardid(heroCard.getId());
+        heroCard.setHero(hero);
+    }
+
+    public void addCardInfosToUserCards(Page<HeroCard> heroCards) {
+        heroCards.forEach(this::generateUserCard);
     }
 }

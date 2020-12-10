@@ -1,6 +1,6 @@
 package com.reactheroes.userservice.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
@@ -28,7 +28,7 @@ public class UserDetail {
     @Column(nullable = false)
     private Long balance;
 
-
+    @JsonManagedReference
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "userDetail")

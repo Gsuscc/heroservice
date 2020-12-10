@@ -6,10 +6,10 @@ import com.reactheroes.userservice.entity.UserDetail;
 import com.reactheroes.userservice.model.Nick;
 import com.reactheroes.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
-
 import java.util.NoSuchElementException;
-import java.util.Set;
+import java.util.List;
 
 @Component
 public class UserDetailJpa implements UserDetailDao {
@@ -46,7 +46,7 @@ public class UserDetailJpa implements UserDetailDao {
         UserDetail userDetail = UserDetail.builder()
                 .email(email)
                 .nick(nick)
-                .balance(1000L)
+                .balance(10000L)
                 .build();
         userRepository.save(userDetail);
     }
@@ -69,8 +69,4 @@ public class UserDetailJpa implements UserDetailDao {
         userRepository.setUserBalance(currentBalance - amount, email);
     }
 
-    @Override
-    public Set<HeroCard> getAllHeroCardsByUserEmail(String email) {
-        return userRepository.getAllHeroCardsByUserEmail(email);
-    }
 }

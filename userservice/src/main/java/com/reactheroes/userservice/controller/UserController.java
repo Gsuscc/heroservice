@@ -12,13 +12,12 @@ import com.reactheroes.userservice.security.JwtTokenServices;
 import com.reactheroes.userservice.service.HeroCallerService;
 import com.reactheroes.userservice.service.HeroCardGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -51,23 +50,16 @@ public class UserController {
     @GetMapping("/mydetails")
     private ResponseEntity<Object> getMyDetails(HttpServletRequest httpServletRequest) {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        if (userDetailDao.isUserDetailNotExist(email)) {
-            return new ResponseEntity<>("Need to create first", HttpStatus.NOT_IMPLEMENTED);
-        }
         return ResponseEntity.ok(userDetailDao.getUserDetail(email));
     }
 
     @GetMapping("/mycards")
-    private ResponseEntity<?> getMyCards(HttpServletRequest httpServletRequest) {
+    private ResponseEntity<?> getMyCards(@RequestParam int page, HttpServletRequest httpServletRequest) {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        if (userDetailDao.isUserDetailNotExist(email)) {
-            return new ResponseEntity<>("Need to create first", HttpStatus.NOT_IMPLEMENTED);
-        }
-        return ResponseEntity.ok(
-                heroCardGenerator.generateUserCards(
-                        userDetailDao.getAllHeroCardsByUserEmail(email)
-                )
-        );
+        UserDetail userDetail = userDetailDao.getUserDetail(email);
+        Page<HeroCard> heroCards = heroCardDao.getHeroCardsPageForUser(userDetail, page);
+        heroCardGenerator.addCardInfosToUserCards(heroCards);
+        return ResponseEntity.ok(heroCards);
     }
 
     @GetMapping("/balance")
@@ -88,16 +80,16 @@ public class UserController {
 
     @GetMapping("/buypack")
     private ResponseEntity<?> buyPackOfHeroes(HttpServletRequest httpServletRequest, @RequestParam int pack){
-        if(pack != 3 && pack != 5 && pack !=7) {
+        if(pack != 4 && pack != 6 && pack !=8) {
             return new ResponseEntity<>("Invalid pack size", HttpStatus.BAD_REQUEST);
         }
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
         UserDetail userDetail = userDetailDao.getUserDetail(email);
         HeroPack heroPack = heroCallerService.getRandomHero(pack);
         try {
-            if (pack == 3) userDetailDao.decrementBalance(1500L, email);
-            if (pack == 5) userDetailDao.decrementBalance(3000L, email);
-            if (pack == 7) userDetailDao.decrementBalance(7500L, email);
+            if (pack == 4) userDetailDao.decrementBalance(1500L, email);
+            if (pack == 6) userDetailDao.decrementBalance(3000L, email);
+            if (pack == 8) userDetailDao.decrementBalance(8500L, email);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
