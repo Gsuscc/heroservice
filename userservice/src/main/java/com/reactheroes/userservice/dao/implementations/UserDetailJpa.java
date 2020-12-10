@@ -46,7 +46,7 @@ public class UserDetailJpa implements UserDetailDao {
         UserDetail userDetail = UserDetail.builder()
                 .email(email)
                 .nick(nick)
-                .balance(1000L)
+                .balance(10000L)
                 .build();
         userRepository.save(userDetail);
     }
