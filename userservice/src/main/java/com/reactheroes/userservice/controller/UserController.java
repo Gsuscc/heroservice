@@ -80,16 +80,16 @@ public class UserController {
 
     @GetMapping("/buypack")
     private ResponseEntity<?> buyPackOfHeroes(HttpServletRequest httpServletRequest, @RequestParam int pack){
-        if(pack != 3 && pack != 5 && pack !=7) {
+        if(pack != 4 && pack != 6 && pack !=8) {
             return new ResponseEntity<>("Invalid pack size", HttpStatus.BAD_REQUEST);
         }
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
         UserDetail userDetail = userDetailDao.getUserDetail(email);
         HeroPack heroPack = heroCallerService.getRandomHero(pack);
         try {
-            if (pack == 3) userDetailDao.decrementBalance(1500L, email);
-            if (pack == 5) userDetailDao.decrementBalance(3000L, email);
-            if (pack == 7) userDetailDao.decrementBalance(7500L, email);
+            if (pack == 4) userDetailDao.decrementBalance(1500L, email);
+            if (pack == 6) userDetailDao.decrementBalance(3000L, email);
+            if (pack == 8) userDetailDao.decrementBalance(8500L, email);
         } catch (NoSuchElementException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
