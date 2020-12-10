@@ -87,7 +87,7 @@ public class UserController {
         UserDetail userDetail = userDetailDao.getUserDetail(email);
         HeroPack heroPack = heroCallerService.getRandomHero(pack);
         try {
-            if (pack == 4) userDetailDao.decrementBalance(1500L, email);
+            if (pack == 4) userDetailDao.decrementBalance(1000L, email);
             if (pack == 6) userDetailDao.decrementBalance(3000L, email);
             if (pack == 8) userDetailDao.decrementBalance(8500L, email);
         } catch (NoSuchElementException e) {
