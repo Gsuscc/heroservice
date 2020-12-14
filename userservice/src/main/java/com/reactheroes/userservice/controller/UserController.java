@@ -105,6 +105,7 @@ public class UserController {
         UserDetail userDetail = userDetailDao.getUserDetail(email);
         HeroCard card = heroCardDao.getHeroCardByCardId(cardId);
         Page<HeroCard> mergeableCards = heroCardDao.getMergeableCards(page, userDetail, card.getCardId(), cardId);
+        heroCardGenerator.addCardInfosToUserCards(mergeableCards);
         return ResponseEntity.ok(mergeableCards);
     }
 
