@@ -1,7 +1,9 @@
 package com.reactheroes.userservice.service;
 
 import com.reactheroes.userservice.entity.HeroCard;
+import com.reactheroes.userservice.model.CardIdList;
 import com.reactheroes.userservice.model.Hero;
+import com.reactheroes.userservice.model.HeroPack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -31,15 +33,18 @@ public class HeroCardGenerator {
         return 13;
     }
 
-    private void generateUserCard(HeroCard heroCard) {
-        Hero hero = heroCallerService.getHeroById(heroCard.getCardId());
+    private void generateUserCard(HeroCard heroCard, HeroPack heroPack) {
+        Hero hero = heroPack.getHeroByCardId(heroCard.getCardId());
         hero.setLevel(getLevel(heroCard.getXp()));
         hero.setXp(heroCard.getXp());
         hero.setCardid(heroCard.getId());
         heroCard.setHero(hero);
     }
 
+
+
     public void addCardInfosToUserCards(Page<HeroCard> heroCards) {
-        heroCards.forEach(this::generateUserCard);
+        HeroPack heroPack = heroCallerService.getHeroesById(new CardIdList(heroCards));
+        heroCards.forEach(card -> generateUserCard(card, heroPack));
     }
 }

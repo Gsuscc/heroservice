@@ -2,6 +2,7 @@ package com.reactheroes.heroservice.service;
 
 import com.reactheroes.heroservice.entity.Hero;
 import com.reactheroes.heroservice.entity.Rarity;
+import com.reactheroes.heroservice.model.CardIdList;
 import com.reactheroes.heroservice.model.HeroPack;
 import com.reactheroes.heroservice.repository.HeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,9 +20,11 @@ public class PackGenerator {
     private final List<Hero> rare;
     private final List<Hero> epic;
     private final List<Hero> legendary;
+    private final HeroRepository heroRepository;
 
     @Autowired
     public PackGenerator(HeroRepository heroRepository, Random random) {
+        this.heroRepository = heroRepository;
         this.common = heroRepository.getByRarity(Rarity.COMMON);
         this.uncommon = heroRepository.getByRarity(Rarity.UNCOMMON);
         this.rare = heroRepository.getByRarity(Rarity.RARE);
@@ -32,6 +35,12 @@ public class PackGenerator {
 
     private Hero getRandom(List<Hero> heroes) {
         return heroes.get(random.nextInt(heroes.size()));
+    }
+
+    public List<Hero> getHeroesByIds(CardIdList cardIdList) {
+        List<Hero> heroes = new ArrayList<>();
+        cardIdList.getCardIds().forEach((id) -> heroes.add(heroRepository.findById(id).get()));
+        return heroes;
     }
 
     public Hero getPack4Card() {
