@@ -1,6 +1,7 @@
 package com.reactheroes.userservice.service;
 
 import com.reactheroes.userservice.entity.HeroCard;
+import com.reactheroes.userservice.model.CardIdList;
 import com.reactheroes.userservice.model.Hero;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,7 +40,10 @@ public class HeroCardGenerator {
         heroCard.setHero(hero);
     }
 
+
+
     public void addCardInfosToUserCards(Page<HeroCard> heroCards) {
+        new CardIdList(heroCards);
         heroCards.forEach(this::generateUserCard);
     }
 }
