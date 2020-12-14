@@ -40,7 +40,7 @@ public class HeroCardJpa implements HeroCardDao {
 
     @Override
     public Page<HeroCard> getMergeableCards(int page, UserDetail userDetail, Long cardId, Long id) {
-        return heroCardRepository.findAllByUserDetailIsAndCardIdIsAndIdNot(PageRequest.of(page, 18), userDetail,cardId, id);
+        return heroCardRepository.findAllByUserDetailIsAndCardIdIsAndIdNot(PageRequest.of(page, 18, Sort.by("xp").descending()), userDetail,cardId, id);
     }
 
     @Override
