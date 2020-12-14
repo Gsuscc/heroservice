@@ -16,6 +16,8 @@ public interface HeroCardRepository extends JpaRepository<HeroCard, Long> {
 
     Page<HeroCard> findAllByUserDetailIs(UserDetail userDetail, Pageable pageable);
 
+    Page<HeroCard> findAllByUserDetailIsAndCardIdIsAndIdNot(Pageable page, UserDetail userDetail ,Long cardId, Long id);
+
     @Query("SELECT hc.xp FROM HeroCard hc WHERE hc.id = :id")
     Long getHeroCardXp(@Param("id") Long id);
 

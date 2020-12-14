@@ -99,5 +99,13 @@ public class UserController {
         }
         return ResponseEntity.ok(heroPack.getHeroes());
     }
+    @GetMapping("/merge")
+    private ResponseEntity<?> getMergeableCards(HttpServletRequest httpServletRequest, @RequestParam Long cardId, @RequestParam Integer page){
+        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
+        UserDetail userDetail = userDetailDao.getUserDetail(email);
+        HeroCard card = heroCardDao.getHeroCardByCardId(cardId);
+        Page<HeroCard> mergeableCards = heroCardDao.getMergeableCards(page, userDetail, card.getCardId(), cardId);
+        return ResponseEntity.ok(mergeableCards);
+    }
 
 }
