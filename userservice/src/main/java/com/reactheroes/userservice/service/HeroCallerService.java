@@ -1,5 +1,7 @@
 package com.reactheroes.userservice.service;
 
+import com.google.gson.Gson;
+import com.reactheroes.userservice.model.CardIdList;
 import com.reactheroes.userservice.model.Hero;
 import com.reactheroes.userservice.model.HeroPack;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,14 +35,14 @@ public class HeroCallerService {
         return restTemplate.getForEntity(BASE_URL + "get/" + id, Hero.class).getBody();
     }
 
-    public HeroPack getHeroesById(Set<Long> cardIds) {
+    public HeroPack getHeroesById(CardIdList cardIds) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
-        MultiValueMap<String, String> map = new LinkedMultiValueMap<String, String>();
-        map.add("cardIds", cardIds.toString());
-        HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<MultiValueMap<String, String>>(map, headers);
-        ResponseEntity<HeroPack> response = restTemplate.exchange( BASE_URL + "getheroes", HttpMethod.GET, request, HeroPack.class );
-        return new HeroPack();
+        Gson gson = new Gson();
+        String gsonString = gson.toJson(cardIds, CardIdList.class);
+        HttpEntity<String> request = new HttpEntity<>(gsonString, headers);
+        ResponseEntity<HeroPack> response = restTemplate.postForEntity( BASE_URL + "getheroes", request, HeroPack.class );
+        return response.getBody();
     }
 
 }
