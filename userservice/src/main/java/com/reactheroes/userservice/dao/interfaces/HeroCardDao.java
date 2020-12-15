@@ -15,5 +15,5 @@ public interface HeroCardDao {
 
     HeroCard getHeroCardByUniqueId(Long uniqueId);
 
-    void deleteCard(Long uniqueId, String email);
+    void deleteCard(Long uniqueId);
 }

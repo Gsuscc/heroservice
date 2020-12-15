@@ -53,8 +53,9 @@ public class HeroCardService {
                     .xp(0L)
                     .email(email)
                     .build();
+            heroCardGenerator.generateSingleCardOffline(heroCard, hero);
             heroCardDao.addCard(heroCard);
-            heroCardGenerator.generateMultipleCards(newCards);
+            newCards.add(heroCard);
         }
         return newCards;
     }
@@ -66,7 +67,7 @@ public class HeroCardService {
         validateCardForUser(mergingCard, email);
         cardToMergeIn.setXp(100L + mergingCard.getXp() + cardToMergeIn.getXp());
         heroCardDao.setHeroCardXp(cardToMergeIn.getXp(), cardToMergeIn.getUniqueId());
-        heroCardDao.deleteCard(mergingCard.getId(), email);
+        heroCardDao.deleteCard(mergingCard.getUniqueId());
         heroCardGenerator.generateSingleCard(cardToMergeIn);
         return cardToMergeIn;
     }

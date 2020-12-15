@@ -26,7 +26,7 @@ public class HeroCardJpa implements HeroCardDao {
 
     @Override
     public Page<HeroCard> getHeroCardsPageForUser(String email, Integer page) {
-        return heroCardRepository.findAllByEmailIs(email, PageRequest.of(page, 18, Sort.by("xp").descending().and(Sort.by("uniqueId").ascending())));
+        return heroCardRepository.findAllByEmailIs(email, PageRequest.of(page, 18, Sort.by("id").ascending().and(Sort.by("xp").descending())));
     }
 
     @Override
@@ -40,7 +40,7 @@ public class HeroCardJpa implements HeroCardDao {
     }
 
     @Override
-    public void deleteCard(Long uniqueId, String email) {
+    public void deleteCard(Long uniqueId) {
         heroCardRepository.deleteByUniqueIdIs(uniqueId);
     }
 

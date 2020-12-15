@@ -1,5 +1,6 @@
 package com.reactheroes.userservice.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.reactheroes.userservice.model.*;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
@@ -19,6 +20,7 @@ public class HeroCard {
     @ColumnDefault("0")
     private Long xp;
 
+    @JsonIgnore
     @Column(nullable = false)
     private String email;
 
@@ -44,7 +46,6 @@ public class HeroCard {
     private Integer level;
 
     public void addHeroData(Hero hero) {
-        this.id = hero.getId();
         this.name = hero.getName();
         this.powerstats = hero.getPowerstats();
         this.biography = hero.getBiography();

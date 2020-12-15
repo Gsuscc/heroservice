@@ -28,6 +28,10 @@ public class HeroCardGenerator {
         buildHeroCard(heroCard, hero);
     }
 
+    public void generateSingleCardOffline(HeroCard heroCard, Hero hero){
+        buildHeroCard(heroCard, hero);
+    }
+
     public void generateMultipleCards(Page<HeroCard> heroCards) {
         HeroPack heroPack = heroCallerService.getHeroesById(new IdGroup(heroCards));
         heroCards.forEach(heroCard -> buildHeroCard(heroCard, heroPack.getHeroById(heroCard.getId())));
