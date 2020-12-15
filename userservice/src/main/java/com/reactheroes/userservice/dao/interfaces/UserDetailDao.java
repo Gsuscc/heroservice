@@ -1,10 +1,7 @@
 package com.reactheroes.userservice.dao.interfaces;
 
-import com.reactheroes.userservice.entity.HeroCard;
 import com.reactheroes.userservice.entity.UserDetail;
 import com.reactheroes.userservice.model.Nick;
-
-import java.util.List;
 
 public interface UserDetailDao {
 

@@ -1,23 +1,19 @@
 package com.reactheroes.userservice.dao.interfaces;
 
 import com.reactheroes.userservice.entity.HeroCard;
-import com.reactheroes.userservice.entity.UserDetail;
-import org.apache.catalina.User;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-
-import java.util.List;
 
 public interface HeroCardDao {
 
-    void gatherXp(Long amount, Long id);
-
     void addCard(HeroCard heroCard);
-    Page<HeroCard> getHeroCardsPageForUser(UserDetail userDetail, Integer page);
 
-    Page<HeroCard> getMergeableCards(int page, UserDetail userDetail , Long cardId, Long id);
+    void setHeroCardXp(Long newXp, Long uniqueId);
 
-    HeroCard getHeroCardByCardId(Long cardId);
+    Page<HeroCard> getHeroCardsPageForUser(String email, Integer page);
 
-    void deleteCard(Long cardId, UserDetail userDetail);
+    Page<HeroCard> getMergeableCards(Integer page, String email , Long uniqueId, Long id);
+
+    HeroCard getHeroCardByUniqueId(Long uniqueId);
+
+    void deleteCard(Long uniqueId);
 }

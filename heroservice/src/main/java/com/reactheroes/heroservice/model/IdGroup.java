@@ -11,8 +11,8 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CardIdList {
+public class IdGroup {
 
-    Set<Long> cardIds;
+    Set<Long> ids;
 
 }

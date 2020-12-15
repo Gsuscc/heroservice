@@ -1,7 +1,7 @@
 package com.reactheroes.heroservice.controller;
 
 import com.reactheroes.heroservice.entity.Hero;
-import com.reactheroes.heroservice.model.CardIdList;
+import com.reactheroes.heroservice.model.IdGroup;
 import com.reactheroes.heroservice.model.HeroPack;
 import com.reactheroes.heroservice.repository.HeroRepository;
 import com.reactheroes.heroservice.service.PackGenerator;
@@ -50,8 +50,8 @@ public class HeroController {
     }
 
     @PostMapping("/getheroes")
-    public ResponseEntity<?> getHeroesByIdList(@RequestBody CardIdList cardIdList) {
-        return ResponseEntity.ok(new HeroPack(packGenerator.getHeroesByIds(cardIdList)));
+    public ResponseEntity<?> getHeroesByIdList(@RequestBody IdGroup idGroup) {
+        return ResponseEntity.ok(new HeroPack(packGenerator.getHeroesByIds(idGroup)));
     }
 }
 

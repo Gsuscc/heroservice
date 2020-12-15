@@ -2,7 +2,7 @@ package com.reactheroes.heroservice.service;
 
 import com.reactheroes.heroservice.entity.Hero;
 import com.reactheroes.heroservice.entity.Rarity;
-import com.reactheroes.heroservice.model.CardIdList;
+import com.reactheroes.heroservice.model.IdGroup;
 import com.reactheroes.heroservice.model.HeroPack;
 import com.reactheroes.heroservice.repository.HeroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +37,9 @@ public class PackGenerator {
         return heroes.get(random.nextInt(heroes.size()));
     }
 
-    public List<Hero> getHeroesByIds(CardIdList cardIdList) {
+    public List<Hero> getHeroesByIds(IdGroup idGroup) {
         List<Hero> heroes = new ArrayList<>();
-        cardIdList.getCardIds().forEach((id) -> heroes.add(heroRepository.findById(id).get()));
+        idGroup.getIds().forEach((id) -> heroes.add(heroRepository.findById(id).get()));
         return heroes;
     }
 

@@ -1,15 +1,13 @@
 package com.reactheroes.userservice.dao.implementations;
 
 import com.reactheroes.userservice.dao.interfaces.UserDetailDao;
-import com.reactheroes.userservice.entity.HeroCard;
 import com.reactheroes.userservice.entity.UserDetail;
 import com.reactheroes.userservice.model.Nick;
 import com.reactheroes.userservice.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Component;
+
 import java.util.NoSuchElementException;
-import java.util.List;
 
 @Component
 public class UserDetailJpa implements UserDetailDao {
