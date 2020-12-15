@@ -1,12 +1,13 @@
 package com.reactheroes.userservice.service;
 
 import com.reactheroes.userservice.entity.HeroCard;
-import com.reactheroes.userservice.model.CardIdList;
+import com.reactheroes.userservice.model.IdGroup;
 import com.reactheroes.userservice.model.Hero;
 import com.reactheroes.userservice.model.HeroPack;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 public class HeroCardGenerator {
@@ -17,42 +18,23 @@ public class HeroCardGenerator {
         this.heroCallerService = heroCallerService;
     }
 
-    private Integer getLevel(Long xp) {
-        if (xp < 100L) return 1;
-        if (xp < 400L) return 2;
-        if (xp < 1500L) return 3;
-        if (xp < 5000L) return 4;
-        if (xp < 15000L) return 5;
-        if (xp < 30000L) return 6;
-        if (xp < 55000L) return 7;
-        if (xp < 80000L) return 8;
-        if (xp < 100000L) return 9;
-        if (xp < 130000L) return 10;
-        if (xp < 160000L) return 11;
-        if (xp < 200000L) return 12;
-        return 13;
-    }
-
-    private void generateUserCard(HeroCard heroCard, HeroPack heroPack) {
-        Hero hero = new Hero(heroPack.getHeroByCardId(heroCard.getCardId()));
-        hero.setLevel(getLevel(heroCard.getXp()));
-        hero.setXp(heroCard.getXp());
-        hero.setCardid(heroCard.getId());
-        heroCard.setHero(hero);
+    private void buildHeroCard(HeroCard heroCard, Hero hero) {
+        heroCard.addHeroData(hero);
+        heroCard.setHeroLevel();
     }
 
     public void generateSingleCard(HeroCard heroCard){
-        Hero hero = heroCallerService.getHeroById(heroCard.getCardId());
-        hero.setLevel(getLevel(heroCard.getXp()));
-        hero.setXp(heroCard.getXp());
-        hero.setCardid(heroCard.getId());
-        heroCard.setHero(hero);
+        Hero hero = heroCallerService.getHeroById(heroCard.getId());
+        buildHeroCard(heroCard, hero);
     }
 
+    public void generateMultipleCards(Page<HeroCard> heroCards) {
+        HeroPack heroPack = heroCallerService.getHeroesById(new IdGroup(heroCards));
+        heroCards.forEach(heroCard -> buildHeroCard(heroCard, heroPack.getHeroById(heroCard.getId())));
+    }
 
-
-    public void addCardInfosToUserCards(Page<HeroCard> heroCards) {
-        HeroPack heroPack = heroCallerService.getHeroesById(new CardIdList(heroCards));
-        heroCards.forEach(card -> generateUserCard(card, heroPack));
+    public void generateMultipleCards(List<HeroCard> heroCards) {
+        HeroPack heroPack = heroCallerService.getHeroesById(new IdGroup(heroCards));
+        heroCards.forEach(heroCard -> buildHeroCard(heroCard, heroPack.getHeroById(heroCard.getId())));
     }
 }

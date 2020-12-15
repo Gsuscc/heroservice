@@ -1,7 +1,6 @@
 package com.reactheroes.userservice.repository;
 
 import com.reactheroes.userservice.entity.HeroCard;
-import com.reactheroes.userservice.entity.UserDetail;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -9,28 +8,22 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-
 import javax.transaction.Transactional;
-import java.util.List;
 
 public interface HeroCardRepository extends JpaRepository<HeroCard, Long> {
 
-    Page<HeroCard> findAllByUserDetailIs(UserDetail userDetail, Pageable pageable);
+    Page<HeroCard> findAllByEmailIs(String email, Pageable pageable);
 
-    Page<HeroCard> findAllByUserDetailIsAndCardIdIsAndIdNot(Pageable page, UserDetail userDetail ,Long cardId, Long id);
-
-    @Query("SELECT hc.xp FROM HeroCard hc WHERE hc.id = :id")
-    Long getHeroCardXp(@Param("id") Long id);
-
+    Page<HeroCard> findAllByEmailIsAndIdIsAndUniqueIdNot(Pageable page, String email, Long id, Long uniqueId);
 
     @Modifying
     @Transactional
-    @Query("UPDATE HeroCard hc SET hc.xp = :xp WHERE hc.id = :id")
-    void incrementHeroCardXp(@Param("xp") Long xp, @Param("id") Long id);
+    @Query("UPDATE HeroCard hc SET hc.xp = :newXp WHERE hc.uniqueId = :uniqueId")
+    void setHeroCardXp(@Param("newXp") Long newXp, @Param("uniqueId") Long uniqueId);
 
 
     @Transactional
     @Modifying
-    void deleteByIdIsAndUserDetailIs(Long id, UserDetail userdetail);
+    void deleteByUniqueIdIs(Long uniqueId);
 
 }

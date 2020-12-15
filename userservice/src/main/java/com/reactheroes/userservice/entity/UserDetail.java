@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Data
 @Entity
@@ -27,12 +26,5 @@ public class UserDetail {
     @ColumnDefault("1000")
     @Column(nullable = false)
     private Long balance;
-
-    @JsonManagedReference
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "userDetail")
-    private Set<HeroCard> heroCards;
-
 
 }

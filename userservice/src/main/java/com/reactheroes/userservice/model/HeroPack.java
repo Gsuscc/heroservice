@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -14,7 +13,7 @@ public class HeroPack {
 
     List<Hero> heroes;
 
-    public Hero getHeroByCardId(Long id) {
+    public Hero getHeroById(Long id) {
         return heroes.stream().filter(hero -> hero.getId().equals(id)).findFirst().get();
     }
 
