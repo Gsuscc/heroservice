@@ -7,6 +7,7 @@ import com.reactheroes.userservice.repository.HeroCardRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import java.util.List;
@@ -36,4 +37,21 @@ public class HeroCardJpa implements HeroCardDao {
     public Page<HeroCard> getHeroCardsPageForUser(UserDetail userDetail, Integer page) {
         return heroCardRepository.findAllByUserDetailIs(userDetail, PageRequest.of(page, 18, Sort.by("xp").descending().and(Sort.by("cardId").ascending())));
     }
+
+    @Override
+    public Page<HeroCard> getMergeableCards(int page, UserDetail userDetail, Long cardId, Long id) {
+        return heroCardRepository.findAllByUserDetailIsAndCardIdIsAndIdNot(PageRequest.of(page, 18, Sort.by("xp").descending()), userDetail,cardId, id);
+    }
+
+    @Override
+    public HeroCard getHeroCardByCardId(Long cardId) {
+        return heroCardRepository.findById(cardId).get();
+    }
+
+    @Override
+    public void deleteCard(Long cardId, UserDetail userDetail) {
+        heroCardRepository.deleteByIdIsAndUserDetailIs(cardId, userDetail);
+    }
+
+
 }

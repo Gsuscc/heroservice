@@ -34,7 +34,15 @@ public class HeroCardGenerator {
     }
 
     private void generateUserCard(HeroCard heroCard, HeroPack heroPack) {
-        Hero hero = heroPack.getHeroByCardId(heroCard.getCardId());
+        Hero hero = new Hero(heroPack.getHeroByCardId(heroCard.getCardId()));
+        hero.setLevel(getLevel(heroCard.getXp()));
+        hero.setXp(heroCard.getXp());
+        hero.setCardid(heroCard.getId());
+        heroCard.setHero(hero);
+    }
+
+    public void generateSingleCard(HeroCard heroCard){
+        Hero hero = heroCallerService.getHeroById(heroCard.getCardId());
         hero.setLevel(getLevel(heroCard.getXp()));
         hero.setXp(heroCard.getXp());
         hero.setCardid(heroCard.getId());

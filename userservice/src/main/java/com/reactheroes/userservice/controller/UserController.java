@@ -11,6 +11,7 @@ import com.reactheroes.userservice.model.Nick;
 import com.reactheroes.userservice.security.JwtTokenServices;
 import com.reactheroes.userservice.service.HeroCallerService;
 import com.reactheroes.userservice.service.HeroCardGenerator;
+import com.reactheroes.userservice.service.HeroCardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -28,14 +29,16 @@ public class UserController {
     private final HeroCallerService heroCallerService;
     private final HeroCardDao heroCardDao;
     private final HeroCardGenerator heroCardGenerator;
+    private final HeroCardService heroCardService;
 
     @Autowired
-    public UserController(JwtTokenServices jwtTokenServices, UserDetailDao userDetailDao, HeroCallerService heroCallerService, HeroCardDao heroCardDao, HeroCardGenerator heroCardGenerator) {
+    public UserController(JwtTokenServices jwtTokenServices, UserDetailDao userDetailDao, HeroCallerService heroCallerService, HeroCardDao heroCardDao, HeroCardGenerator heroCardGenerator, HeroCardService heroCardService) {
         this.jwtTokenServices = jwtTokenServices;
         this.userDetailDao = userDetailDao;
         this.heroCallerService = heroCallerService;
         this.heroCardDao = heroCardDao;
         this.heroCardGenerator = heroCardGenerator;
+        this.heroCardService = heroCardService;
     }
 
     @GetMapping("/status")
@@ -98,6 +101,21 @@ public class UserController {
             heroCardDao.addCard(heroCard);
         }
         return ResponseEntity.ok(heroPack.getHeroes());
+    }
+    @GetMapping("/merge")
+    private ResponseEntity<?> getMergeableCards(HttpServletRequest httpServletRequest, @RequestParam Long cardId, @RequestParam Integer page){
+        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
+        UserDetail userDetail = userDetailDao.getUserDetail(email);
+        HeroCard card = heroCardDao.getHeroCardByCardId(cardId);
+        Page<HeroCard> mergeableCards = heroCardDao.getMergeableCards(page, userDetail, card.getCardId(), cardId);
+        heroCardGenerator.addCardInfosToUserCards(mergeableCards);
+        return ResponseEntity.ok(mergeableCards);
+    }
+    @GetMapping("/mergecard")
+    private ResponseEntity<?> mergeCards(HttpServletRequest httpServletRequest, @RequestParam Long mergeInto, @RequestParam Long merging){
+        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
+        UserDetail userDetail = userDetailDao.getUserDetail(email);
+        return ResponseEntity.ok((heroCardService.mergeCards(userDetail, mergeInto, merging)));
     }
 
 }
