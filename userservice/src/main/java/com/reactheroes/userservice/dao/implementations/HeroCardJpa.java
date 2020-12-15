@@ -48,5 +48,10 @@ public class HeroCardJpa implements HeroCardDao {
         return heroCardRepository.findById(cardId).get();
     }
 
+    @Override
+    public void deleteCard(Long cardId, UserDetail userDetail) {
+        heroCardRepository.deleteByIdIsAndUserDetailIs(cardId, userDetail);
+    }
+
 
 }

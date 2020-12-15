@@ -18,4 +18,6 @@ public interface HeroCardDao {
     Page<HeroCard> getMergeableCards(int page, UserDetail userDetail , Long cardId, Long id);
 
     HeroCard getHeroCardByCardId(Long cardId);
+
+    void deleteCard(Long cardId, UserDetail userDetail);
 }
