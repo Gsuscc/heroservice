@@ -21,9 +21,10 @@ public interface HeroCardRepository extends JpaRepository<HeroCard, Long> {
     @Query("UPDATE HeroCard hc SET hc.xp = :newXp WHERE hc.uniqueId = :uniqueId")
     void setHeroCardXp(@Param("newXp") Long newXp, @Param("uniqueId") Long uniqueId);
 
-
     @Transactional
     @Modifying
     void deleteByUniqueIdIs(Long uniqueId);
+
+    Integer countAllByEmailIs(String email);
 
 }

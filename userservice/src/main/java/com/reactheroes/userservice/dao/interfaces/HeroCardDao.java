@@ -16,4 +16,6 @@ public interface HeroCardDao {
     HeroCard getHeroCardByUniqueId(Long uniqueId);
 
     void deleteCard(Long uniqueId);
+
+    Integer countAllByEmailIs(String email);
 }

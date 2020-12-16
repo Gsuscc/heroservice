@@ -45,6 +45,11 @@ public class HeroCardJpa implements HeroCardDao {
     }
 
     @Override
+    public Integer countAllByEmailIs(String email) {
+        return heroCardRepository.countAllByEmailIs(email);
+    }
+
+    @Override
     public void addCard(HeroCard heroCard) {
         heroCardRepository.save(heroCard);
     }

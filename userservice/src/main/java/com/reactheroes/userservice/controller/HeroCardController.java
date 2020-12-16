@@ -1,53 +1,28 @@
 package com.reactheroes.userservice.controller;
 
-import com.reactheroes.userservice.dao.interfaces.HeroCardDao;
 import com.reactheroes.userservice.dao.interfaces.UserDetailDao;
 import com.reactheroes.userservice.entity.HeroCard;
-import com.reactheroes.userservice.entity.UserDetail;
-import com.reactheroes.userservice.model.Balance;
-import com.reactheroes.userservice.model.Hero;
-import com.reactheroes.userservice.model.HeroPack;
-import com.reactheroes.userservice.model.Nick;
 import com.reactheroes.userservice.security.JwtTokenServices;
-import com.reactheroes.userservice.service.HeroCallerService;
-import com.reactheroes.userservice.service.HeroCardGenerator;
 import com.reactheroes.userservice.service.HeroCardService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.NoSuchElementException;
 
-@RestController
-public class UserController {
+public class HeroCardController {
 
+    private final HeroCardService heroCardService;
     private final JwtTokenServices jwtTokenServices;
     private final UserDetailDao userDetailDao;
-    private final HeroCardService heroCardService;
 
-    @Autowired
-    public UserController(JwtTokenServices jwtTokenServices, UserDetailDao userDetailDao, HeroCallerService heroCallerService, HeroCardDao heroCardDao, HeroCardGenerator heroCardGenerator, HeroCardService heroCardService) {
+    public HeroCardController(HeroCardService heroCardService, JwtTokenServices jwtTokenServices, UserDetailDao userDetailDao) {
+        this.heroCardService = heroCardService;
         this.jwtTokenServices = jwtTokenServices;
         this.userDetailDao = userDetailDao;
-        this.heroCardService = heroCardService;
-    }
-
-    @GetMapping("/status")
-    private ResponseEntity<?> getStatus(HttpServletRequest httpServletRequest) {
-        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        if (userDetailDao.isUserDetailNotExist(email)) {
-            return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
-        }
-        return ResponseEntity.ok(userDetailDao.getUserDetail(email));
-    }
-
-    @GetMapping("/mydetails")
-    private ResponseEntity<Object> getMyDetails(HttpServletRequest httpServletRequest) {
-        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        return ResponseEntity.ok(userDetailDao.getUserDetail(email));
     }
 
     @GetMapping("/mycards")
@@ -55,16 +30,6 @@ public class UserController {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
         Page<HeroCard> heroCards = heroCardService.getMyCards(email, page);
         return ResponseEntity.ok(heroCards);
-    }
-
-    @PostMapping("/create")
-    private ResponseEntity<?> createUserDetails(@RequestBody Nick nick, HttpServletRequest httpServletRequest) {
-        if (userDetailDao.isNickAlreadyTaken(nick.getNick())) {
-            return new ResponseEntity<>("Nickname is already taken!", HttpStatus.IM_USED);
-        }
-        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        userDetailDao.createNewUserDetail(nick.getNick(), email);
-        return ResponseEntity.ok("Success");
     }
 
     @GetMapping("/buypack")
