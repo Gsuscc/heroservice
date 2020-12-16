@@ -41,7 +41,7 @@ public class UserController {
         if (userDetailDao.isUserDetailNotExist(email)) {
             return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
         }
-        return ResponseEntity.ok(userDetailDao.getNickByEmail(email));
+        return ResponseEntity.ok(userDetailDao.getUserDetail(email));
     }
 
     @GetMapping("/mydetails")
@@ -55,12 +55,6 @@ public class UserController {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
         Page<HeroCard> heroCards = heroCardService.getMyCards(email, page);
         return ResponseEntity.ok(heroCards);
-    }
-
-    @GetMapping("/balance")
-    private ResponseEntity<?> getBalance(HttpServletRequest httpServletRequest) {
-        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        return ResponseEntity.ok(new Balance(userDetailDao.getUserBalance(email)));
     }
 
     @PostMapping("/create")
