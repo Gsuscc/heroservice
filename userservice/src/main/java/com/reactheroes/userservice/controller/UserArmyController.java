@@ -37,6 +37,7 @@ public class UserArmyController {
     @PostMapping("/setarmy")
     private ResponseEntity<?> setMyArmy(@RequestBody Army army, HttpServletRequest httpServletRequest) {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
+        if(army.isDuplicate()) return new ResponseEntity<>("No duplicates allowed", HttpStatus.BAD_REQUEST);
         for (Long uniqueId: army.getArmy()) {
             if (!heroCardDao.isUserOwnCard(email, uniqueId))
                 return new ResponseEntity<>("Got illegal card", HttpStatus.BAD_REQUEST);

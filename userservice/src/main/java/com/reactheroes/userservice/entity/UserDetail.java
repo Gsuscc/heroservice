@@ -18,7 +18,6 @@ import java.lang.annotation.Inherited;
 @AllArgsConstructor
 @Builder
 public class UserDetail {
-
     @Id
     @GeneratedValue
     private Long id;
@@ -32,5 +31,4 @@ public class UserDetail {
     @ColumnDefault("1000")
     @Column(nullable = false)
     private Long balance;
-
 }
