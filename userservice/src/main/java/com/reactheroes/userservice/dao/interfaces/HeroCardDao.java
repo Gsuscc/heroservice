@@ -18,4 +18,6 @@ public interface HeroCardDao {
     void deleteCard(Long uniqueId);
 
     Integer countAllByEmailIs(String email);
+
+    boolean isUserOwnCard(String email, Long uniqueId);
 }

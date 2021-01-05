@@ -27,4 +27,6 @@ public interface HeroCardRepository extends JpaRepository<HeroCard, Long> {
 
     Integer countAllByEmailIs(String email);
 
+    boolean existsByEmailIsAndUniqueIdIs(String email, Long uniqueId);
+
 }

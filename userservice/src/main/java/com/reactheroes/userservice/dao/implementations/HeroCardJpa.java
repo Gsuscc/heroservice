@@ -50,6 +50,11 @@ public class HeroCardJpa implements HeroCardDao {
     }
 
     @Override
+    public boolean isUserOwnCard(String email, Long uniqueId) {
+        return heroCardRepository.existsByEmailIsAndUniqueIdIs(email, uniqueId);
+    }
+
+    @Override
     public void addCard(HeroCard heroCard) {
         heroCardRepository.save(heroCard);
     }

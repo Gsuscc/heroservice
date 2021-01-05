@@ -2,6 +2,7 @@ package com.reactheroes.userservice.dao.implementations;
 
 import com.reactheroes.userservice.dao.interfaces.UserArmyDao;
 import com.reactheroes.userservice.entity.UserArmy;
+import com.reactheroes.userservice.model.Army;
 import com.reactheroes.userservice.repository.UserArmyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -35,7 +36,15 @@ public class UserArmyJpa implements UserArmyDao {
     }
 
     @Override
-    public void updateUserArmy(String email, UserArmy userArmy) {
-
+    public void updateUserArmy(String email, Army army) {
+        userArmyRepository.updateArmy(
+                email,
+                army.getArmy().get(0),
+                army.getArmy().get(1),
+                army.getArmy().get(2),
+                army.getArmy().get(3),
+                army.getArmy().get(4)
+        );
     }
+
 }
