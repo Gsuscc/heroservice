@@ -3,6 +3,7 @@ package com.reactheroes.heroservice.entity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.reactheroes.heroservice.util.StringListConverter;
 import lombok.*;
 
 import javax.persistence.*;
@@ -27,7 +28,8 @@ public class Biography {
     private String alterEgos;
 
     @Singular
-    @ElementCollection
+    @Convert(converter = StringListConverter.class)
+    @Column(columnDefinition = "TEXT")
     private List<String> aliases;
 
     @JsonProperty(value = "place-of-birth")

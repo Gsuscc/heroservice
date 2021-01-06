@@ -34,6 +34,7 @@ public class InitDb {
                 if (!heroRepository.existsById(i)) {
                     Hero hero = remoteHeroCaller.downloadHero(i);
                     hero.calculateCost();
+                    hero.setRarity(hero.calculateRarity());
                     heroRepository.save(hero);
                     logger.info("Hero saved successfully: " + hero.getName());
                 }

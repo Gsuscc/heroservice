@@ -14,12 +14,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.rememberme.CookieTheftException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
@@ -59,12 +57,26 @@ public class AuthController {
 
             Cookie cookie = new Cookie("token", token);
             cookie.setMaxAge(10 * 60 * 60);
-            cookie.setSecure(true);
+            cookie.setSecure(false);
             cookie.setHttpOnly(true);
+            cookie.setPath("/");
             response.addCookie(cookie);
             return ResponseEntity.ok("Success");
         } catch (AuthenticationException e) {
             return new ResponseEntity<>("Invalid username/password supplied", HttpStatus.I_AM_A_TEAPOT);
         }
+    }
+    @GetMapping("/clear")
+    public ResponseEntity<Object> logoutUser(HttpServletRequest request, HttpServletResponse response){
+        Cookie[] cookies = request.getCookies();
+        for(Cookie cookie: cookies){
+            String name = cookie.getName();
+            Cookie toDelete = new Cookie(name, null);
+            toDelete.setMaxAge(0);
+            toDelete.setPath("/");
+            toDelete.setHttpOnly(true);
+            response.addCookie(toDelete);
+        }
+        return ResponseEntity.ok("Success");
     }
 }
