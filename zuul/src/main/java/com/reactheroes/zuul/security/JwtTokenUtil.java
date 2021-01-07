@@ -43,7 +43,7 @@ public class JwtTokenUtil implements Serializable {
             }
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            log.debug("JWT token invalid " + e);
+//            log.debug("JWT token invalid " + e);
         }
         return false;
     }
