@@ -9,13 +9,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Connections {
+public class FightBase {
 
-
-
-    private String groupAffiliation;
-
-    private String relatives;
-
+    Fight myArmy;
+    Fight enemyArmy;
 
 }

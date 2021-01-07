@@ -9,16 +9,18 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Hero {
+public class HeroCard {
 
+    private Long uniqueId;
+    private Long xp;
     private Long id;
     private String name;
     private Powerstats powerstats;
     private Biography biography;
-    private Appearance appearance;
-    private Work work;
-    private Connections connections;
     private Image image;
     private String rarity;
+    private Integer level;
 
 }
+
+

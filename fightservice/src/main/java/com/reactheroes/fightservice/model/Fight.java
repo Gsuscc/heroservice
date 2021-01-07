@@ -11,17 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Appearance {
+public class Fight {
 
-
-    private String gender;
-    private String race;
-    private List<String> height;
-    private List<String> weight;
-
-    private String eyeColor;
-
-    private String hairColor;
-
+    String nick;
+    List<HeroCard> cards;
 
 }
