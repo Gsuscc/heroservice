@@ -18,6 +18,11 @@ public class UserArmyJpa implements UserArmyDao {
     }
 
     @Override
+    public UserArmy getArmyById(Long id) {
+        return userArmyRepository.findById(id).get();
+    }
+
+    @Override
     public void createArmy(UserArmy userArmy) {
         userArmyRepository.save(userArmy);
     }

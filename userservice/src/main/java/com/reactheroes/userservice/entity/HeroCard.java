@@ -32,10 +32,13 @@ public class HeroCard {
     private Powerstats powerstats;
     @Transient
     private Biography biography;
+    @JsonIgnore
     @Transient
     private Appearance appearance;
+    @JsonIgnore
     @Transient
     private Work work;
+    @JsonIgnore
     @Transient
     private Connections connections;
     @Transient
