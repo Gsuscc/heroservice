@@ -26,4 +26,9 @@ public class FightJpa implements FightDao {
         }
         return fightCache;
     }
+
+    @Override
+    public void addEnemyToCache(String email, String enemyJsonString) {
+        fightRepository.updateFightCache(email, enemyJsonString);
+    }
 }

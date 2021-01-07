@@ -2,6 +2,7 @@ package com.reactheroes.fightservice.controller;
 
 import com.reactheroes.fightservice.dao.interfaces.FightDao;
 import com.reactheroes.fightservice.entity.FightCache;
+import com.reactheroes.fightservice.model.Fight;
 import com.reactheroes.fightservice.model.FightBase;
 import com.reactheroes.fightservice.security.JwtTokenServices;
 import com.reactheroes.fightservice.service.FightService;
@@ -31,6 +32,11 @@ public class FightController {
         return ResponseEntity.ok(cachedFightByEmail);
     }
 
-
+    @GetMapping("/getenemy")
+    private ResponseEntity<?> getEnemy(HttpServletRequest httpServletRequest) {
+        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
+        Fight enemy = fightService.getNextEnemy(email);
+        return ResponseEntity.ok(enemy);
+    }
 
 }
