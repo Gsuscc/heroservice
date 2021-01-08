@@ -5,19 +5,18 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Fight {
+public class Stat {
 
-    String nick;
-    List<HeroCard> cards;
-
-    public void generateStats() {
-        cards.forEach(HeroCard::calculateStats);
-    }
+    int maxHp;
+    int minDmg;
+    int maxDmg;
+    double kapowChance;
+    double boomChance;
+    double missChance;
+    double doubleChance;
 
 }

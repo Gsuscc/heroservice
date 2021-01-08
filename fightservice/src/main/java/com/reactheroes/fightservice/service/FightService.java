@@ -5,6 +5,7 @@ import com.reactheroes.fightservice.dao.interfaces.EnemyDao;
 import com.reactheroes.fightservice.dao.interfaces.FightDao;
 import com.reactheroes.fightservice.entity.EnemyQueue;
 import com.reactheroes.fightservice.entity.FightCache;
+import com.reactheroes.fightservice.model.Battle;
 import com.reactheroes.fightservice.model.Fight;
 import com.reactheroes.fightservice.model.FightBase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -69,5 +70,20 @@ public class FightService {
     private Fight getArmyByEmail(String email) {
         return userCallerService.getArmyByEmail(email);
     }
+
+    public Battle startFight(String email) {
+        FightCache fightCache = fightDao.getFightByEmail(email);
+        String enemyJsonString = fightCache.getEnemyCached();
+        Fight enemyArmy = gson.fromJson(enemyJsonString, Fight.class);
+        Fight myArmy = getArmyByEmail(email);
+        Battle battle = Battle.builder()
+                .myArmy(myArmy)
+                .enemyArmy(enemyArmy)
+                .build();
+        battle.startBattle();
+        return battle;
+    }
+
+
 
 }
