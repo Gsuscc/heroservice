@@ -34,19 +34,21 @@ public class HeroCard {
         int maxHp = 10 + level / 10 * durability;
         int minDmg = 2 + level / 30 * power;
         int maxDmg = minDmg + 2 + level / 50 * strength;
-        double kapow = (combat + strength) / 2.0 * (level * 0.2);
-        double boom = (combat + intelligence) / 2.0 * (level * 0.2);
-        double doubleHit = (combat + speed) / 2.0 * (level * 0.2);
-        double miss = 100.0 / ((speed + intelligence + durability + combat) * level);
+        Integer kapow = ((combat + strength) + (level * 50)) / 12;
+        Integer boom = ((combat + intelligence) + (level * 50)) / 12;
+        Integer doubleHit = ((combat + speed) + (level * 50)) / 12;
+        Integer hit = ((speed + strength + power + combat) + (level * 50));
+        Integer miss = ((speed + intelligence + durability + combat) + (level * 50)) / 4;
 
         this.stat = new Stat();
         this.stat.setMaxHp(maxHp);
         this.stat.setMaxDmg(maxDmg);
         this.stat.setMinDmg(minDmg);
-        this.stat.setKapowChance(kapow);
-        this.stat.setBoomChance(boom);
-        this.stat.setDoubleChance(doubleHit);
-        this.stat.setMissChance(miss);
+        this.stat.setKapowRate(kapow);
+        this.stat.setBoomRate(boom);
+        this.stat.setDoubleRate(doubleHit);
+        this.stat.setMissRate(miss);
+        this.stat.setHitRate(hit);
 
 
     }

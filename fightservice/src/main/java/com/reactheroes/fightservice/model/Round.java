@@ -1,12 +1,18 @@
 package com.reactheroes.fightservice.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Round {
 
-    HeroCard myCard;
-    HeroCard enemyCard;
-
-    Integer myHp;
-    Integer enemyHp;
+    Player attacker;
+    Player defender;
 
     Integer damage;
     Action action;

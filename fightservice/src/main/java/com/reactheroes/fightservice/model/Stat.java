@@ -11,12 +11,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Stat {
 
-    int maxHp;
-    int minDmg;
-    int maxDmg;
-    double kapowChance;
-    double boomChance;
-    double missChance;
-    double doubleChance;
+    private int maxHp;
+    private int minDmg;
+    private int maxDmg;
+    private Integer kapowRate;
+    private Integer boomRate;
+    private Integer doubleRate;
+    private Integer missRate;
+    private Integer hitRate;
 
 }

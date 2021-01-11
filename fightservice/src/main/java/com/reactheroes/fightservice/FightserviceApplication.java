@@ -8,6 +8,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Random;
+
 @SpringBootApplication
 @EnableEurekaClient
 public class FightserviceApplication {
@@ -24,4 +26,8 @@ public class FightserviceApplication {
 
 	@Bean
 	public Gson gson() { return new Gson(); }
+
+	@Bean
+	public Random random() {return new Random();}
+
 }
