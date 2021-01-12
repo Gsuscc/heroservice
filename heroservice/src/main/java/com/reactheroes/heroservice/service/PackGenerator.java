@@ -58,8 +58,8 @@ public class PackGenerator {
     }
 
     public Hero getPack8Card() {
-        final int LEGENDARY_CHANCE_RATE = 3000;
-        final int EPIC_CHANCE_RATE = 200;
+        final int LEGENDARY_CHANCE_RATE = 300;
+        final int EPIC_CHANCE_RATE = 100;
         final int RARE_CHANCE_RATE = 40;
         return getHero(LEGENDARY_CHANCE_RATE, EPIC_CHANCE_RATE, RARE_CHANCE_RATE);
     }

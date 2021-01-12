@@ -60,7 +60,7 @@ public class Battle {
                 .builder()
                 .isAttacker(defender.isAttacker)
                 .myHp(defender.myHp)
-                .card(defender.card)
+                .uniqueId(defender.getUniqueId())
                 .build();
     }
 
@@ -71,15 +71,17 @@ public class Battle {
     private Player initPlayer(HeroCard card, boolean isAttacker) {
         return Player
                 .builder()
-                .card(card)
+                .uniqueId(card.getUniqueId())
                 .myHp(card.getStat().getMaxHp())
                 .isAttacker(isAttacker)
                 .build();
     }
 
     private void roundGenerator(Player attacker, Player defender) {
-        Action action = attacker.getAction(defender.getCard());
-        Integer damage = attacker.getDamage(action);
+        HeroCard attackerCard = findHeroCard(attacker);
+        HeroCard defenderCard = findHeroCard(defender);
+        Action action = attacker.getAction(attackerCard, defenderCard);
+        Integer damage = attacker.getDamage(attackerCard, action);
         defender.receiveDamage(damage);
         Round round = Round.builder()
                 .attacker(attacker)
@@ -88,6 +90,15 @@ public class Battle {
                 .damage(damage)
                 .build();
         rounds.add(round);
+    }
+
+    private HeroCard findHeroCard(Player player){
+        if(player.isAttacker){
+            return myArmy.getCards().stream().filter(x-> x.getUniqueId().equals(player.uniqueId)).findFirst().get();
+        }
+        else {
+            return enemyArmy.getCards().stream().filter(x-> x.getUniqueId().equals(player.uniqueId)).findFirst().get();
+        }
     }
 
 }

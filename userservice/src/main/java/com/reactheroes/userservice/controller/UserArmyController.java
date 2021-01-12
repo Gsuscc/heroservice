@@ -42,6 +42,7 @@ public class UserArmyController {
     private ResponseEntity<?> getMyArmy(HttpServletRequest httpServletRequest) {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
         UserArmy userArmy = userArmyDao.getUserArmyByEmail(email);
+        //TODO fix this internal server error when user dont have army or deleted
         List<HeroCard> army = List.of(heroCardService.getCardByUniqueId(userArmy.getCard1(), email),
                 heroCardService.getCardByUniqueId(userArmy.getCard2(), email),
                 heroCardService.getCardByUniqueId(userArmy.getCard3(), email),

@@ -13,7 +13,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class Player {
 
-    HeroCard card;
+    Long uniqueId;
     Integer myHp;
     boolean isAttacker;
     @JsonIgnore
@@ -23,7 +23,7 @@ public class Player {
         return myHp <= 0;
     }
 
-    public Action getAction(HeroCard defender) {
+    public Action getAction(HeroCard card, HeroCard defender) {
         Integer missRate = defender.getStat().getMissRate();
         Integer hitRate = card.getStat().getHitRate();
         if (randomService.isRandomRateGreaterThan(missRate, hitRate)) return Action.MISS;
@@ -36,7 +36,7 @@ public class Player {
         return Action.POW;
     }
 
-    public Integer getDamage(Action action) {
+    public Integer getDamage(HeroCard card, Action action) {
         Integer randomDamage = randomService.getRandomDamage(
                 card.getStat().getMinDmg(),
                 card.getStat().getMaxDmg()
