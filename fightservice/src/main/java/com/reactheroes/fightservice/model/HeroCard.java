@@ -31,9 +31,9 @@ public class HeroCard {
         Integer power = powerstats.getPower() == null ? 1 : powerstats.getPower();
         Integer combat = powerstats.getCombat() == null ? 1 : powerstats.getCombat();
 
-        int maxHp = 10 + level / 10 * durability;
-        int minDmg = 2 + level / 30 * power;
-        int maxDmg = minDmg + 2 + level / 50 * strength;
+        int maxHp = (level + 2) * ((durability + strength) / 10 + 1) +50;
+        int minDmg = level * ((power + combat)/10 + 1) + 5;
+        int maxDmg = minDmg + 2 + (level  * (strength / 10 + 1));
         Integer kapow = ((combat + strength) + (level * 50)) / 12;
         Integer boom = ((combat + intelligence) + (level * 50)) / 12;
         Integer doubleHit = ((combat + speed) + (level * 50)) / 12;
