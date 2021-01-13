@@ -5,5 +5,6 @@ public enum Action {
     KAPOW,
     BOOM,
     MISS,
-    DOUBLE
+    DOUBLE,
+    STARTBATTLE,
 }

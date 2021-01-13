@@ -27,6 +27,7 @@ public class Battle {
         List<HeroCard> enemyCards = new java.util.ArrayList<>(List.copyOf(enemyArmy.getCards()));
         Player me = initPlayer(myCards.remove(0), true);
         Player enemy = initPlayer(enemyCards.remove(0), false);
+        initialRound(me, enemy);
         roundGenerator(me, enemy);
         doBattle(myCards, enemyCards);
     }
@@ -75,6 +76,16 @@ public class Battle {
                 .myHp(card.getStat().getMaxHp())
                 .isAttacker(isAttacker)
                 .build();
+    }
+
+    private void initialRound(Player attacker, Player defender) {
+        Round round = Round.builder()
+                .attacker(attacker)
+                .defender(defender)
+                .action(Action.STARTBATTLE)
+                .damage(null)
+                .build();
+        rounds.add(round);
     }
 
     private void roundGenerator(Player attacker, Player defender) {
