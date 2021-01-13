@@ -56,5 +56,8 @@ public class Player {
 
     public void receiveDamage(Integer damage) {
         myHp -= damage;
+        if (myHp < 0) {
+            myHp = 0;
+        }
     }
 }
