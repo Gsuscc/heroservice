@@ -49,19 +49,28 @@ public class Battle {
                 }
             }
             if (lastRound.getAction().equals(Action.DOUBLE)) {
-                roundGenerator(defender, attacker);
+                if(lastRound.getDefender().isDied()){
+                    initNewRound(defender, attacker);
+                }else{
+                    roundGenerator(defender, attacker);
+                }
             } else {
-                roundGenerator(attacker, defender);
+                if(lastRound.getDefender().isDied()){
+                    initNewRound(attacker, defender);
+                }else{
+                    roundGenerator(attacker, defender);
+                }
+
             }
         }
     }
 
-    private Player rebuildPlayer(Player defender) {
+    private Player rebuildPlayer(Player player) {
         return Player
                 .builder()
-                .isAttacker(defender.isAttacker)
-                .myHp(defender.myHp)
-                .uniqueId(defender.getUniqueId())
+                .isAttacker(player.isAttacker)
+                .myHp(player.myHp)
+                .uniqueId(player.getUniqueId())
                 .build();
     }
 
@@ -83,6 +92,16 @@ public class Battle {
                 .attacker(attacker)
                 .defender(defender)
                 .action(Action.STARTBATTLE)
+                .damage(null)
+                .build();
+        rounds.add(round);
+    }
+
+    private void initNewRound(Player attacker, Player defender) {
+        Round round = Round.builder()
+                .attacker(attacker)
+                .defender(defender)
+                .action(Action.KILLED)
                 .damage(null)
                 .build();
         rounds.add(round);

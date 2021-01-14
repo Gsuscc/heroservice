@@ -7,4 +7,5 @@ public enum Action {
     MISS,
     DOUBLE,
     STARTBATTLE,
+    KILLED
 }
