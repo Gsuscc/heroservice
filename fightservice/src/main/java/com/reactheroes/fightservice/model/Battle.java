@@ -28,15 +28,15 @@ public class Battle {
         Player me = initPlayer(myCards.remove(0), true);
         Player enemy = initPlayer(enemyCards.remove(0), false);
         initialRound(me, enemy);
-        roundGenerator(me, enemy);
+        roundGenerator(rebuildPlayer(me), rebuildPlayer(enemy));
         doBattle(myCards, enemyCards);
     }
 
     private void doBattle(List<HeroCard> myCards, List<HeroCard> enemyCards) {
         while (true) {
             Round lastRound = getLastRound();
-            Player attacker = swapPlayer(lastRound.getDefender());
-            Player defender = swapPlayer(lastRound.getAttacker());
+            Player attacker = rebuildPlayer(lastRound.getDefender());
+            Player defender = rebuildPlayer(lastRound.getAttacker());
             if (lastRound.getDefender().isDied()) {
                 if (lastRound.getDefender().isAttacker) {
                     if (myCards.size() > 0) {
@@ -56,7 +56,7 @@ public class Battle {
         }
     }
 
-    private Player swapPlayer(Player defender) {
+    private Player rebuildPlayer(Player defender) {
         return Player
                 .builder()
                 .isAttacker(defender.isAttacker)
