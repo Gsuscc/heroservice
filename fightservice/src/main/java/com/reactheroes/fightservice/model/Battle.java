@@ -48,20 +48,30 @@ public class Battle {
                     } else return;
                 }
             }
-            if (lastRound.getAction().equals(Action.DOUBLE)) {
-                if(lastRound.getDefender().isDied()){
-                    initNewRound(defender, attacker);
-                }else{
-                    roundGenerator(defender, attacker);
-                }
-            } else {
-                if(lastRound.getDefender().isDied()){
-                    initNewRound(attacker, defender);
-                }else{
-                    roundGenerator(attacker, defender);
-                }
 
+            if (lastRound.getDefender().isDied()) {
+                initNewRound(defender, attacker);
             }
+            if (lastRound.getAction().equals(Action.DOUBLE)) {
+                roundGenerator(defender, attacker);
+            } else {
+                roundGenerator(attacker, defender);
+            }
+
+//            if (lastRound.getAction().equals(Action.DOUBLE) && !lastRound.getDefender().isDied()) {
+//                if(lastRound.getDefender().isDied()){
+//                    initNewRound(defender, attacker);
+//                }else{
+//                    roundGenerator(defender, attacker);
+//                }
+//            } else {
+//                if(lastRound.getDefender().isDied()){
+//                    initNewRound(attacker, defender);
+//                }else{
+//                    roundGenerator(attacker, defender);
+//                }
+//
+//            }
         }
     }
 
@@ -98,9 +108,11 @@ public class Battle {
     }
 
     private void initNewRound(Player attacker, Player defender) {
+        Player rebuiltAttacker = rebuildPlayer(attacker);
+        Player rebuiltDefender = rebuildPlayer(defender);
         Round round = Round.builder()
-                .attacker(attacker)
-                .defender(defender)
+                .attacker(rebuiltAttacker)
+                .defender(rebuiltDefender)
                 .action(Action.KILLED)
                 .damage(null)
                 .build();
