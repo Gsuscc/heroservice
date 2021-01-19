@@ -16,7 +16,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserArmyController {
@@ -42,12 +44,10 @@ public class UserArmyController {
     private ResponseEntity<?> getMyArmy(HttpServletRequest httpServletRequest) {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
         UserArmy userArmy = userArmyDao.getUserArmyByEmail(email);
-        //TODO fix this internal server error when user dont have army or deleted
-        List<HeroCard> army = List.of(heroCardService.getCardByUniqueId(userArmy.getCard1(), email),
-                heroCardService.getCardByUniqueId(userArmy.getCard2(), email),
-                heroCardService.getCardByUniqueId(userArmy.getCard3(), email),
-                heroCardService.getCardByUniqueId(userArmy.getCard4(), email),
-                heroCardService.getCardByUniqueId(userArmy.getCard5(), email));
+        if (userArmy.isEmpty()) return ResponseEntity.ok(List.of());
+        List<HeroCard> army = userArmy.getCards().stream().map(
+                (uniqueId) -> heroCardService.getCardByUniqueId(uniqueId, email)
+                ).collect(Collectors.toList());
         heroCardGenerator.generateMultipleCards(army);
         return ResponseEntity.ok(army);
     }
