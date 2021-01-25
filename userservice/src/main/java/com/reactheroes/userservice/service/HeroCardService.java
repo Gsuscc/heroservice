@@ -72,9 +72,11 @@ public class HeroCardService {
         return cardToMergeIn;
     }
 
-    public void sellCard(String email, Long uniqueId) {
+    public Long sellCard(String email, Long uniqueId) {
+        Long price = calculateSellingPrice(uniqueId);
         validateCardForUser(heroCardDao.getHeroCardByUniqueId(uniqueId), email);
         heroCardDao.deleteCard(uniqueId);
+        return price;
     }
 
     private void validateCardForUser(HeroCard heroCard, String email) {
@@ -83,6 +85,7 @@ public class HeroCardService {
 
     public Long calculateSellingPrice(Long uniqueId){
         HeroCard card = heroCardDao.getHeroCardByUniqueId(uniqueId);
+        heroCardGenerator.generateSingleCard(card);
         if (card.getRarity().equals("COMMON")) return 50L;
         if (card.getRarity().equals("UNCOMMON")) return 75L;
         if (card.getRarity().equals("RARE")) return 150L;

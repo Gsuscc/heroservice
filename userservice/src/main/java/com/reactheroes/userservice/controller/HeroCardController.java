@@ -68,8 +68,7 @@ public class HeroCardController {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
         Long uniqueId = request.get("uniqueId");
         try {
-            heroCardService.sellCard(email, uniqueId);
-            userDetailDao.incrementBalance(heroCardService.calculateSellingPrice(uniqueId), email);
+            userDetailDao.incrementBalance(heroCardService.sellCard(email, uniqueId), email);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
