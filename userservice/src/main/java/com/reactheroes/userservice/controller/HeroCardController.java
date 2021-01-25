@@ -7,9 +7,7 @@ import com.reactheroes.userservice.service.HeroCardService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.NoSuchElementException;
@@ -62,6 +60,11 @@ public class HeroCardController {
     private ResponseEntity<?> mergeCards(HttpServletRequest httpServletRequest, @RequestParam Long mergeInto, @RequestParam Long merging){
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
         return ResponseEntity.ok((heroCardService.mergeCards(email, mergeInto, merging)));
+    }
+    @DeleteMapping("/sell-card")
+    private ResponseEntity<?> sellUserCard(HttpServletRequest httpServletRequest, @RequestParam Long uniqueId){
+        String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
+        return ResponseEntity.ok(uniqueId);
     }
 
 }
