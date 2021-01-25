@@ -10,6 +10,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import java.util.List;
+
 @Data
 @Entity
 @NoArgsConstructor
@@ -30,4 +32,11 @@ public class UserArmy {
     private Long card4;
     private Long card5;
 
+    public List<Long> getCards() {
+        return List.of(card1, card2, card3, card4, card5);
+    }
+
+    public boolean isEmpty() {
+        return card1 == null || card2 == null || card3 == null || card4 == null || card5 == null;
+    }
 }
