@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 @RestController
@@ -61,10 +62,18 @@ public class HeroCardController {
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
         return ResponseEntity.ok((heroCardService.mergeCards(email, mergeInto, merging)));
     }
+
     @DeleteMapping("/sell-card")
-    private ResponseEntity<?> sellUserCard(HttpServletRequest httpServletRequest, @RequestParam Long uniqueId){
+    private ResponseEntity<?> sellUserCard(HttpServletRequest httpServletRequest, @RequestBody Map<String, Long> request){
         String email = jwtTokenServices.getEmailFromToken(httpServletRequest);
-        return ResponseEntity.ok(uniqueId);
+        Long uniqueId = request.get("uniqueId");
+        try {
+            heroCardService.sellCard(email, uniqueId);
+            userDetailDao.incrementBalance(heroCardService.calculateSellingPrice(uniqueId), email);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok("Success");
     }
 
 }

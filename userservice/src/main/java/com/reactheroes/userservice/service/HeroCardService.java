@@ -72,7 +72,21 @@ public class HeroCardService {
         return cardToMergeIn;
     }
 
+    public void sellCard(String email, Long uniqueId) {
+        validateCardForUser(heroCardDao.getHeroCardByUniqueId(uniqueId), email);
+        heroCardDao.deleteCard(uniqueId);
+    }
+
     private void validateCardForUser(HeroCard heroCard, String email) {
         if (!heroCard.getEmail().equals(email)) throw new IllegalStateException("Access denied");
+    }
+
+    public Long calculateSellingPrice(Long uniqueId){
+        HeroCard card = heroCardDao.getHeroCardByUniqueId(uniqueId);
+        if (card.getRarity().equals("COMMON")) return 50L;
+        if (card.getRarity().equals("UNCOMMON")) return 75L;
+        if (card.getRarity().equals("RARE")) return 150L;
+        if (card.getRarity().equals("EPIC")) return 300L;
+        return 490L;
     }
 }
